@@ -1,0 +1,131 @@
+.saving-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+}
+.amount-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    
+}
+.allocation-list{
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    font-size: 20px;
+    margin: 0;
+}
+
+.amount-form input{
+    height: 25px;
+    margin-left: 5px;
+    transform: translateY(-2px);
+    text-align: center;
+    font-size: 16px;
+}
+.category-type{
+    margin-top: 60px;
+}
+.category-type select{
+    background-color: rgba(58, 85, 153, 0.8);
+    border-radius: 6px;
+    height: 45px;
+    border: 1px solid black  ;
+    color: white;
+}
+.category-type select:hover{
+    background-color: rgba(58, 85, 153, 1);
+
+}
+.category-type input{
+    margin-bottom: 10px;
+    height: 40px;
+    width: 50%;
+    text-align: center;
+    font-size: 18px;
+}
+
+.saving-button{
+    margin-top: auto;
+}
+
+
+.allocation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* お好み */
+  max-width: 1000px;
+  flex-wrap: nowrap;
+}
+
+.allocation-name {
+  flex: 1;
+  text-align: left;
+  margin-left: 10%;
+  max-width: 250px;
+  min-width: 150px; /* ← これ追加 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateX(30px);
+}
+
+.allocation-input {
+  width: 100px;
+  text-align: center;
+  font-size: 16px;
+  width: 150px;
+  height: 60px;
+  margin-right: 10%;
+  transform: translateX(-30px);
+}
+
+.saving-delete {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  width: auto;
+  cursor: pointer;
+transform: translateX(-40px);
+}
+@media(max-width:768px){
+    .allocation-item {
+      max-width: 400px;
+    align-items: flex-start;
+    padding: 8px 4px;
+    gap: 4px;
+  }
+  .allocation-name {
+    white-space: normal; /* モバイル時は折り返してもOKにする */
+    text-align: left;
+    margin-right: 0;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .allocation-input {
+    width: 100%;
+    max-width: 200px;
+    margin-right: 10px;
+  }
+
+  .saving-delete {
+    transform: translateY(-15px);
+    margin-right: 5px;
+  }
+    .saving-container h1{
+        font-size: 24px;
+    }
+    .saving-container h2{
+        font-size: 20px;
+    }
+}

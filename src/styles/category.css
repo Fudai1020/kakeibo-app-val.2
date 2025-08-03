@@ -1,0 +1,230 @@
+.month{
+    margin-top: 20px;
+}
+.category-list{
+    color: white;
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    height: 540px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(58, 106, 153, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+}
+.overflow-category{
+  height: 450px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  border-bottom: 2px solid white;
+  padding: 20px;
+}
+.category-block {
+    color: white;
+    display: flex;
+    align-items: center; /* 追加 */
+    flex-direction: column;
+    font-size: 20px;
+    border-bottom: 1px solid #ccc;
+}
+.sub-category-item{
+    margin-bottom: 12px;
+    font-size: 18px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+.sub-category-item span.memo-text ,span.created-at{
+  display: block;
+  text-align: center;
+  margin-top: 4px;
+}
+.category-title:hover {
+    display: inline;
+  text-decoration: underline;
+}
+.animated-number {
+  text-decoration: inherit;
+}
+.category-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+  position: relative;
+}
+.category-actions{
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  min-width: 80px; 
+}
+.icon-button{
+    background:none;
+    border: none;
+    color:white;
+    cursor: pointer;
+    font-size: 20px;
+    width: auto;
+    transform: translateY(15%);
+    padding: auto;
+}
+.category-header:hover .category-actions {
+  visibility: visible;
+  opacity: 1;
+}
+
+.memo-text:hover{
+    text-decoration: none;
+}
+.edit-category{
+    width: 120px;
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+.edit-buttons{
+  display: flex;
+  flex-direction: row; /* 横並びにする */
+  gap: 8px; /* ボタン間の余白 */
+  align-items: center;
+}
+.icon-buttons{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.edit-button{
+    width: auto;
+    transform: translateY(15%);
+}
+.total-amount{
+  bottom: 20px;
+  left: 50%;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 18px;
+  z-index: 1000;
+}
+.type-switch {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  font-size: 20px;
+  color: white;
+}
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.radio-wrapper input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+}
+.radio-wrapper input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 3px;
+  left: 3px;
+  background-color: white;
+  border-radius: 50%;
+}
+.subicon-buttons{
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.subicon-button{
+  width: auto;
+  margin: 0;
+  padding: auto;
+  background:none;
+  font-size: 15px;
+}
+.edit-subcategory{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-subcategory input {
+  width: auto;
+  height: 30px;
+  text-align: center;
+  font-size: 14px;
+}
+.subEdit-buttons{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.subEdit-buttons button{
+  width: auto;
+  margin: 0;
+}
+.input-row{
+  display: flex;
+  align-items: center;
+}
+.edit-category-memo{
+  display: flex;
+  justify-content: center;
+}
+.subcategory-list{
+  font-weight: bold;
+  font-size: 20px;
+}
+.category-month{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.month-navigate{
+  align-items: center;
+}
+@media(max-width:768px){
+  .category-list{
+    max-width: 380px;
+    width: 100%;
+  }
+   .total-amount {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .category-block {
+  font-size: 16px; /* 例: 20px → 16px に縮小 */
+}
+
+.sub-category-item {
+  font-size: 14px;
+}
+
+.type-switch {
+  font-size: 16px;
+}
+
+.total-amount {
+  font-size: 14px;
+}
+.edit-subcategory input{
+  width: 100px;
+}
+}

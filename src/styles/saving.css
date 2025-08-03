@@ -1,0 +1,39 @@
+.saving-box{
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: rgba(58, 106, 153, 0.7);
+    width: 400px;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 300px;
+
+}
+.saving-category{
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height:auto ;
+    margin-bottom: 10px;
+    gap: 2px;
+    padding-top: 15px;
+}
+.saving-category p{
+    font: bold;
+    margin: 0px;
+    font-size: 20px;
+}
+.Saving-button{
+   margin-top: auto;
+}
+@media(max-width:768px){
+    .saving-box{
+        width: 100%;
+        max-width: 380px;
+    }
+}
