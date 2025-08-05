@@ -1,4 +1,4 @@
-package kakeibo_app_java.dto;
+package kakeibo_app_java.kakeibo_app_java.dto;
 
 public class RegisterRequest {
     private String email;
