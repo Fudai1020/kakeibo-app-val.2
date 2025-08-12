@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kakeibo_app_java.kakeibo_app_java.entity.User;
+import kakeibo_app_java.kakeibo_app_java.exception.BadRequestException;
 import kakeibo_app_java.kakeibo_app_java.repository.UserRepository;
 
 @Service
@@ -47,6 +48,43 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("パスワードが正しくありません");
         }
         return user;
+    }
+
+    @Override
+    public User getUserById(Long id){
+        User user = userRepository.findById(id)
+                    .orElseThrow(()-> new RuntimeException("ユーザが見つかりません"));
+        return user;
+    }
+
+    @Override
+    public User editProfile(Long id,String name,String memo){
+        User user = userRepository.findById(id)
+                    .orElseThrow(()-> new RuntimeException("ユーザが見つかりません"));
+
+        if(name != null && !name.isBlank()){
+            user.setName(name);
+        }
+        if(memo != null && !memo.isBlank()){
+            user.setMemo(memo);
+        }
+
+        return userRepository.save(user);
+
+    }
+    @Override
+    public User changePassword(Long id,String password,String newPassword){
+        User user = userRepository.findById(id)
+                    .orElseThrow(()-> new BadRequestException("ユーザが見つかりません"));
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw new BadRequestException("パスワードが正しくありません");
+        }
+        if(newPassword == null || newPassword.trim().isEmpty()){
+            throw new BadRequestException("値を入力してください");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        return userRepository.save(user);
     }
 
      

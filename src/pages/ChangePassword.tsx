@@ -19,7 +19,42 @@ const ChangePassword = () => {
 
     //パスワードの変更の処理
     const handlePasswordChange = async()=>{
-        
+        const id = localStorage.getItem('userId');
+        if(newPassword != confirmPassword){
+            setError('パスワードが一致していません');
+            return;
+        }
+        try{
+            const response = await fetch(`http://localhost:8080/api/users/${id}/changePassword`,{
+                method:'PUT',
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify({
+                    password:currentPassword,
+                    newPassword:newPassword,
+                }),
+            });
+            if(response.ok){
+                alert('パスワードを変更しました');
+                setError('');
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+            }else{
+                const text = await response.text();
+                console.log(text);
+                try{
+                const errorData = await response.json();
+                console.log(errorData);
+                setError(errorData.message);
+                }catch(e){
+                    setError('サーバーから不正なレスポンスが返されました')
+                }
+            }
+        }catch(error){
+            setError('通信に失敗しました。');
+        }
     }
   return (
     <div>

@@ -8,6 +8,16 @@ const UserProfile = () => {
     //ユーザ情報を管理する各プロパティは存在しない可能性があるのでoptional(?:)にしている
     const [userData,setUserData] = useState<{name?:string,email?:string,memo?:string} | null>(null);
     //コンポーネントの初回マウント時、ログイン中のユーザ情報を取得してstateにセット
+    useEffect(()=>{
+      const id = localStorage.getItem('userId');
+      if(!id) return;
+      fetch(`http://localhost:8080/api/users/${id}`)
+          .then(res => res.json())
+          .then(data =>{
+            setUserData(data);
+          })
+          .catch(err => console.error('Error',err));
+    },[])
 
   return (
     <div className="main-container">

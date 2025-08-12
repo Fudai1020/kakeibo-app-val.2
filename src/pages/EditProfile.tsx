@@ -1,10 +1,8 @@
 import Header from "../components/Header"
-import { getAuth } from "firebase/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import'../styles/editProfile.css';
 import icon from '../assets/default.png'
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 
 
@@ -18,13 +16,31 @@ const EditProfile = () => {
     const [originalMemo,setOriginalMemo] = useState('');
     const navigate = useNavigate();
     //Firebaseからユーザ情報を初回マウント時取得
-   
+   useEffect(()=>{
+    const id = localStorage.getItem('userId');
+    fetch(`http://localhost:8080/api/users/${id}`)
+        .then(res => res.json())
+        .then(data =>{
+            setOriginalName(data.name);
+            setOriginalMemo(data.memo);
+        })
+   },[])
 //編集したユーザ情報を保存
 const handleEditSave = async() =>{
+    const id = localStorage.getItem('userId');
 
     try{
-        //データが空白だったら元のデータを保存し、データがあれば新しいデータを保存する
-       
+        const response = await fetch(`http://localhost:8080/api/users/${id}/editProfile`,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+            },
+            body:JSON.stringify({
+                name:newName,
+                memo:newMemo,
+            }),
+        });
+        if(response.ok){
         //完了アラートを出す
         alert('編集完了！');
         //テキストボックスを空欄にする
@@ -32,10 +48,11 @@ const handleEditSave = async() =>{
         setNewMemo('');
         //プロフィール画面に遷移
         navigate('/userProfile');
+        }
     }catch(error){
         console.error('更新に失敗しました',error);
     }
-    }
+}
 
   return (
     <div>
