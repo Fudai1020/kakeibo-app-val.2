@@ -28,20 +28,19 @@ public class IncomeServiceImpl implements IncomeService{
     }
     @Override
     public Income saveIncome(IncomeRequest dto){
-        IncomeCategory category =   null;
-                User user = userRepository.findById(dto.getUserId())
+        IncomeCategory category = null;
+        User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new BadRequestException("ユーザが見つかりません"));
         if(dto.getIncomeCategoryId() != null){
             category = incomeCategoryRepository.findById(dto.getIncomeCategoryId())
                     .orElseThrow(()->new BadRequestException("カテゴリが見つかりません"));
         }else if(dto.getIncomeCategoryName() != null && !dto.getIncomeCategoryName().isBlank()){
-                category = IncomeCategory.builder()
-                        .categoryName(dto.getIncomeCategoryName())
-                        .user(user)
-                        .build(); 
-                category = incomeCategoryRepository.save(category);
+            category = IncomeCategory.builder()
+                .categoryName(dto.getIncomeCategoryName())
+                .user(user)
+                .build(); 
+            category = incomeCategoryRepository.save(category);
         }
-
         Income income = Income.builder()
             .name(dto.getName())
             .memo(dto.getMemo())
