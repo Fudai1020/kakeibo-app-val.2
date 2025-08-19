@@ -38,11 +38,43 @@ const TransactionFormModal = ({
     const numeric = half.replace(/[^0-9]/g, ''); //数字以外の除去
     return Number(numeric); //数値型で返す
   };
-  console.log(slideDirection);
+
 
   //フォームの入力値をデータベースに保存する処理
   const handleSubmit = async () => {
+
+    try{
+      const userId = localStorage.getItem('userId');
+    const payload = {
+      name:subCategory,
+      amount:normalizeAmount(amount),
+      memo:memo,
+      incomeDate:date,
+      isPrivate:isPrivate,
+      incomeCategoryName:type === 'income' ? selectedMainCategory:undefined,
+      paymentCategoryName:type === 'payment' ? selectedMainCategory:undefined,
+      userId:userId ? Number(userId) : null
+    };
+    const url = type === 'income' ? 'http://localhost:8080/api/incomes/save' : 'http://localhost:8080/api/payments/save'
    
+    const response = await fetch(url,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),
+    });
+    if(response.ok){
+      onClose();
+    }else{
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || '保存に失敗しました。')
+      
+    }
+  }catch(error){
+    console.error(error);
+    alert('保存に失敗しました。')
+  }
+    
+
   };
   //カテゴリモーダルを開く処理
   const openCategoryModal = () => {
@@ -58,7 +90,15 @@ const TransactionFormModal = ({
   };
   //カテゴリをデータベースに追加する処理
   const addCategory = async (name: string, type: 'income' | 'payment') => {
-   
+    if(!name) return;
+
+    if(type === 'income') {
+      setIncomeCategories(prev => [...prev,name]);
+    } else{
+      setPaymentCategories(prev => [...prev,name]);
+    }
+    setMainCategoryInput('');
+    setSelectedMainCategory(name);
   };
 
 

@@ -19,9 +19,11 @@ CREATE TABLE incomes(
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
-CREATE TABLE categories(
-    category_id INT PRIMARY KEY AUTO_INCREMENT,
-    category_name VARCHAR(50) NOT NULL
+CREATE TABLE payment_categories(
+    payment_category_id INT PRIMARY KEY AUTO_INCREMENT,
+    payment_category_name VARCHAR(50) NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 CREATE TABLE payments(
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,9 +34,9 @@ CREATE TABLE payments(
     payment_date DATETIME NOT NULL,
     created_at DATETIME NOT NULL,
     user_id INT,
-    category_id INT,
+    payment_category_id INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+    FOREIGN KEY (payment_category_id) REFERENCES payment_categories(payment_category_id)
 );
 CREATE TABLE savings(
     saving_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -59,4 +61,10 @@ CREATE TABLE shared(
     is_active BOOLEAN NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES users(user_id),
     FOREIGN KEY (partner_id) REFERENCES users(user_id)
+);
+CREATE TABLE income_categories(
+    income_category_id INT PRIMARY KEY AUTO_INCREMENT,
+    income_category_name VARCHAR(50) NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

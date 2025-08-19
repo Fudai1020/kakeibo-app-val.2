@@ -1,13 +1,17 @@
 package kakeibo_app_java.kakeibo_app_java.entity;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,7 +37,13 @@ public class User {
     @Column(name = "created_at")
     private Date createdAt;
 
-    public Long getId(){ return id; }
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Income> incomes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<IncomeCategory> incomeCategories = new ArrayList<>();
+
+    public Long getId(){ return id; } 
     public void setId(Long id){ this.id = id; }
 
     public String getName(){return name;}
@@ -50,4 +60,10 @@ public class User {
 
     public Date getCreatedAt(){return createdAt;}
     public void setCreatedAt(Date createdAt){this.createdAt = createdAt;}
+
+    public List<Income> getIncomes(){return incomes;}
+    public void setIncomes(List<Income> incomes){this.incomes = incomes;}
+
+    public List<IncomeCategory> getIncomeCategories(){return incomeCategories;}
+    public void setIncomeCategories(List<IncomeCategory> incomeCategories){this.incomeCategories = incomeCategories;}
 }
