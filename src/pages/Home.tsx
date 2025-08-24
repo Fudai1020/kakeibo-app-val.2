@@ -20,12 +20,16 @@ const Home = () => {
   const [paymentCategories, setPaymentCategories] = useState<string[]>([]); //支出のカテゴリを配列で管理
   const [sharedWith,setSharedWith] = useState<string|null>(null); //共有相手のuidを管理
   const [partnerName,setPartnerName] = useState<string|null>(null); //共有相手の名前を管理
+  const [refreshTrigger,setRefreshTrigger] = useState(0);
 
   //コンポーネントの初回マウント時にユーザデータを取得
 
   //モーダルの開閉処理
   const openModal = () => setIsopenModal(true);
   const closeModal = () => setIsopenModal(false);
+  const handleSaveSuccess = ()=>{
+    setRefreshTrigger(prev => prev + 1);
+  }
 
   return (
     <div>
@@ -38,7 +42,7 @@ const Home = () => {
         <TransactionFormModal 
         onClose={closeModal} type={transactionTyoe} incomeCategories={incomeCategories} 
         setIncomeCategories={setIncomeCategories}paymentCategories={paymentCategories}
-        setPaymentCategories={setPaymentCategories}/>
+        setPaymentCategories={setPaymentCategories} onSaveSuccess={handleSaveSuccess}/>
         )}
         {modalType === "saving" &&(
           <SavingAllocationModal onClose={closeModal} balance={savingBalance} selectedDate={selectDate}/>
@@ -54,7 +58,7 @@ const Home = () => {
         <div className="left-section">
           <div className="income-layout">
             <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} 
-            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
+            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} refreshTrigger={refreshTrigger}/>
           </div>
           <div className="saving-layout">
           <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith} />

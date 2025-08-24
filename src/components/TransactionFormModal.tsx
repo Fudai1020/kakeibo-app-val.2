@@ -9,6 +9,7 @@ type Props = {
   setIncomeCategories: React.Dispatch<React.SetStateAction<string[]>>;//親から渡されたset関数をstring型の配列で定義
   paymentCategories: string[];
   setPaymentCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  onSaveSuccess:()=>void;
 };
 
 const TransactionFormModal = ({
@@ -17,7 +18,8 @@ const TransactionFormModal = ({
   incomeCategories,
   setIncomeCategories,
   paymentCategories,
-  setPaymentCategories
+  setPaymentCategories,
+  onSaveSuccess
 }: Props) => {
   const [view, setView] = useState<'form' | 'category'>('form'); //モーダル内の画面の切り替えの管理
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null); //アニメーションの方向の管理
@@ -39,6 +41,14 @@ const TransactionFormModal = ({
     return Number(numeric); //数値型で返す
   };
 
+  useEffect(()=>{
+    const userId = localStorage.getItem('userId');
+
+    fetch(`http://localhost:8080/api/incomes/user/${userId}`)
+      .then(res => res.json())
+      .then((data:string[])=>setIncomeCategories(data))
+      .catch(err => console.error('カテゴリ取得失敗',err));
+  },[])
 
   //フォームの入力値をデータベースに保存する処理
   const handleSubmit = async () => {
@@ -63,7 +73,8 @@ const TransactionFormModal = ({
       body:JSON.stringify(payload),
     });
     if(response.ok){
-      onClose();
+      onSaveSuccess(); 
+      onClose(); 
     }else{
       const errorMessage = await response.text();
       throw new Error(errorMessage || '保存に失敗しました。')

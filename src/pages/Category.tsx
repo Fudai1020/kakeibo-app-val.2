@@ -16,9 +16,41 @@ type Transaction = {
 const Category = () => {
   const [date, setDate] = useState(new Date()); //日付を管理
   const [transactions, setTransactions] = useState<Transaction[]>([]);  //取得するデータの管理
-  const [type, setType] = useState<"income" | "payment">("payment"); // 収入 or 支出の選択の管理
+  const [type, setType] = useState<"income" | "payment">("income"); // 収入 or 支出の選択の管理
   //dateかtypeのマウント時、ユーザのカテゴリデータを取得
   
+  useEffect(()=>{
+    const fetchTransactioins = async()=>{
+    const year = date.getFullYear();
+    const month = date.getMonth() +1 ;
+    const userId = localStorage.getItem('userId');
+    if(!userId) return;
+    try{
+      const response = await fetch(`http://localhost:8080/api/${type}s/${userId}/${year}/${month}`,
+        {
+          credentials:'include',
+        }
+      );
+      if(!response.ok) throw new Error('データの取得に失敗しました');
+      const data:Transaction[] = await response.json();
+      setTransactions(data.map((item:any)=>{
+      console.log(item.incomeDate);
+        return{
+          id: item.id,
+        amount: item.amount,
+        mainCategory: item.incomeCategoryName || item.paymentCategoryName || "",
+        subCategory:item.name, // サブカテゴリがあればここに
+        memo: item.memo,
+        createdAt:new Date(item.incomeDate || item.paymentDate),
+        }
+      })) 
+    }catch(err){
+      console.error(err); 
+    }
+  }
+  fetchTransactioins();
+  },[date,type])
+
 
   return (
     <div>

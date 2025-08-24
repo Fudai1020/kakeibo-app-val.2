@@ -13,10 +13,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "incomes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Income {
     @Id
@@ -49,31 +57,4 @@ public class Income {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "income_category_id")
     private IncomeCategory incomeCategory;
-
-    public Long getId(){return id;}
-    public void setId(Long id){this.id = id;}
-
-    public String getName(){return name;}
-    public void setName(String name){this.name = name;}
-
-    public BigDecimal getAmount(){return amount;}
-    public void setAmount(BigDecimal amount){this.amount = amount;}
-
-    public String getMemo(){return memo;}
-    public void setMemo(String memo){this.memo = memo;}
-
-    public boolean getIsPrivate(){return isPrivate;}
-    public void setIsPrivate(boolean isPrivate){this.isPrivate = isPrivate;}
-
-    public LocalDate getIncomeDate(){return incomeDate;}
-    public void setIncomeDate(LocalDate incomeDate){this.incomeDate = incomeDate;}
-    
-    public LocalDateTime getCreatedAt(){return createdAt;}
-    public void setCreatedAt(LocalDateTime createdAt){this.createdAt = createdAt;}
-
-    public User getUser(){return user;}
-    public void setUser(User user){this.user = user;}
-
-    public IncomeCategory getIncomeCategory(){return incomeCategory;}
-    public void setIncomeCategory(IncomeCategory incomeCategory){this.incomeCategory = incomeCategory;}
 }

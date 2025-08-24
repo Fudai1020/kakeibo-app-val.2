@@ -10,7 +10,6 @@ const COLORS = [
 ];
 
 const Charts = ({paymentData}:props) => {
-    console.log(paymentData)
    return (
     <div style={{ width: '100%', height: 300 }}>
       {/*親コンテナに合わせてグラフのサイズを調整する*/}
