@@ -66,7 +66,7 @@ const Home = () => {
         </div>  
         <div className="payment-layout">
           <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} 
-            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} partnerName={partnerName}/>
+            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} partnerName={partnerName} refreshTrigger={refreshTrigger}/>
         </div>
       </div>
       </div>

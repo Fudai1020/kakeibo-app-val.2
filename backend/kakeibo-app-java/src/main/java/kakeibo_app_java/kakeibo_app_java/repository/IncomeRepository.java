@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import kakeibo_app_java.kakeibo_app_java.entity.Income;
 
 public interface IncomeRepository extends JpaRepository<Income,Long>{
-    @Query("SELECT COALESCE(SUM(i.amount), 0) "+
+    @Query("SELECT (SUM(i.amount), 0) "+
             "FROM Income i " +
             "WHERE i.user.id = :userId " +
             "AND YEAR(i.incomeDate) = :year " +

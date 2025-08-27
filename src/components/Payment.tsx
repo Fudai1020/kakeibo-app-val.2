@@ -9,9 +9,10 @@ type Props = {
   selectedDate: Date;
   sharedWith: string | null;
   partnerName:string|null;
+  refreshTrigger?:Number;
 };
 
-const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerName }: Props) => {
+const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerName,refreshTrigger }: Props) => {
   const [totalAmount, setTotalAmount] = useState(0);
   //オブジェクトの型を指定してstate管理
   const [categoryTotals, setCategoryTotals] = useState<{
@@ -20,6 +21,24 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
   const [privateState,setPrivateState] = useState<{[key:string]:boolean}>({});
 
   //selectedDate,SharedWithのマウント時に自分と相手の情報を取得
+  useEffect(()=>{
+    const userId = localStorage.getItem('userId');
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth()+1;
+    if(!userId) return;
+
+    fetch(`http://localhost:8080/api/payments/${userId}/${year}/${month}/summary`)
+    .then(res => res.json())
+  .then(data => {
+    setTotalAmount(data.totalAmount);
+    const categoryMap:{ [key:string]: {amount:number; isMine:boolean }[] } = {};
+    (data.categoryTotals ?? []).forEach((c:{ category:string; total:number }) =>{
+      categoryMap[c.category] = [{  amount:c.total,isMine:true}];
+    });
+    setCategoryTotals(categoryMap);
+  })
+  .catch(err => console.error('支出取得失敗',err));
+  },[selectedDate,sharedWith,refreshTrigger]);
   
 //取得したデータを処理して月ごと、カテゴリ別に整形する
   const processPaymentData = (allData: any[], currentUid: string) => {

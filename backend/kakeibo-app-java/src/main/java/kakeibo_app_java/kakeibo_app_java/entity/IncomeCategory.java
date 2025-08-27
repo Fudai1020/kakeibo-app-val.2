@@ -40,7 +40,7 @@ public class IncomeCategory {
     public IncomeCategory(){}
 
     public IncomeCategory(String categoryName,User user){
-        this.categoryName = categoryName;
+        this.categoryName = categoryName;   
         this.user = user;
     }
 

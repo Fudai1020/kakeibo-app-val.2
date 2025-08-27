@@ -34,7 +34,6 @@ const Category = () => {
       if(!response.ok) throw new Error('データの取得に失敗しました');
       const data:Transaction[] = await response.json();
       setTransactions(data.map((item:any)=>{
-      console.log(item.incomeDate);
         return{
           id: item.id,
         amount: item.amount,

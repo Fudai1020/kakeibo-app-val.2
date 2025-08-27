@@ -2,7 +2,6 @@ package kakeibo_app_java.kakeibo_app_java.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,41 +19,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "incomes")
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "payments")
 @Builder
-public class Income {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "income_id")
+    @Column(name = "payment_id")
     private Long id;
-
-    @Column(name = "income_name")
+    @Column(name = "payment_name")
     private String name;
-
-    @Column(name = "income_amount",precision = 10,scale = 2)
+    @Column(name = "payment_amount",precision = 10,scale = 2)
     private BigDecimal amount;
-
-    @Column(name = "income_memo")
+    @Column(name = "payment_memo")
     private String memo;
-
     @Column(name = "is_private")
     private boolean isPrivate;
-
-    @Column(name = "income_date")
-    private LocalDate incomeDate;
-
+    @Column(name = "payment_date")
+    private LocalDate paymentDate;
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    
+    private LocalDate createdAt;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")   
+    @JoinColumn(name = "user_id")
     private User user;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "income_category_id")
-    private IncomeCategory incomeCategory;  
+    @JoinColumn(name = "payment_category_id")
+    private PaymentCategory paymentCategory;
+    
 }
