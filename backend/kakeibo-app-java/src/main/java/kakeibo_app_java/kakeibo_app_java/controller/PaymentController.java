@@ -1,11 +1,11 @@
 package kakeibo_app_java.kakeibo_app_java.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import kakeibo_app_java.kakeibo_app_java.KakeiboAppJavaApplication;
 import kakeibo_app_java.kakeibo_app_java.dto.PaymentRequest;
 import kakeibo_app_java.kakeibo_app_java.dto.PaymentResponse;
 import kakeibo_app_java.kakeibo_app_java.dto.PaymentSummary;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
@@ -24,7 +26,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     
-    public PaymentController(PaymentService paymentService, KakeiboAppJavaApplication kakeiboAppJavaApplication){
+    public PaymentController(PaymentService paymentService){
         this.paymentService = paymentService;
     }
 
@@ -65,6 +67,10 @@ public class PaymentController {
                 .paymentCategoryName(payment.getPaymentCategory() != null ? payment.getPaymentCategory().getPaymentCategoryName():null)
                 .build())
                 .toList();
+    }
+    @GetMapping("/{id}/{year}/{month}/sum")
+    public BigDecimal getPaymentSum(@PathVariable Long id,@PathVariable int year,@PathVariable int month) {
+        return paymentService.getPaymentSum(id, year, month);
     }
     
     

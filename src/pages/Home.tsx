@@ -13,7 +13,6 @@ import SavingAllocationModal from "../components/SavingAllocationModal"
 const Home = () => {
   const [modalType,setModalType] = useState<"transaction" | "saving" |null>(null); //モーダルのタイプを管理
   const [isopenModal,setIsopenModal] = useState(false); //モーダルの開閉管理
-  const [savingBalance,setSavingBalance] = useState(0); //収入かた支出を引いた値を管理
   const [selectDate,setSelectDate] = useState(new Date());  //表示する月の管理
   const [transactionTyoe,setTransactionType] = useState<'income' | 'payment'>('income')  //支出と収入の種類管理
   const [incomeCategories, setIncomeCategories] = useState<string[]>([]); //収入のカテゴリを配列で管理
@@ -45,7 +44,7 @@ const Home = () => {
         setPaymentCategories={setPaymentCategories} onSaveSuccess={handleSaveSuccess}/>
         )}
         {modalType === "saving" &&(
-          <SavingAllocationModal onClose={closeModal} balance={savingBalance} selectedDate={selectDate}/>
+          <SavingAllocationModal onClose={closeModal}  selectedDate={selectDate} onSaveSuccess={handleSaveSuccess}/>
         )}
       </Modal>
     )}
@@ -61,7 +60,7 @@ const Home = () => {
             setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} refreshTrigger={refreshTrigger}/>
           </div>
           <div className="saving-layout">
-          <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith} />
+          <Saving onAddClick={openModal} setModalType={setModalType}  selectedDate={selectDate} sharedWith={sharedWith} refreshTrigger={refreshTrigger}/>
           </div>
         </div>  
         <div className="payment-layout">

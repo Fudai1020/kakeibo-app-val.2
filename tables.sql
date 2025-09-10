@@ -59,12 +59,19 @@ CREATE TABLE shared(
     partner_id INT NOT NULL,
     started_at DATETIME NOT NULL,
     is_active BOOLEAN NOT NULL,
-    FOREIGN KEY (owner_id) REFERENCES users(user_id),
-    FOREIGN KEY (partner_id) REFERENCES users(user_id)
+    FOREIGN KEY (owner_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (partner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 CREATE TABLE income_categories(
     income_category_id INT PRIMARY KEY AUTO_INCREMENT,
     income_category_name VARCHAR(50) NOT NULL,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE TABLE share_code(
+    code_id INT PRIMARY KEY AUTO_INCREMENT,
+    owner_id INT NOT NULL,
+    code VARCHAR(50) UNIQUE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(owner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );

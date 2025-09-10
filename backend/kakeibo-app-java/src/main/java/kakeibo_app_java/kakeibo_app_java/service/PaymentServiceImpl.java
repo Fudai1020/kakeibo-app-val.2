@@ -80,4 +80,8 @@ public class PaymentServiceImpl implements PaymentService{
     public List<Payment> findMonthlyPayments(Long id,int year,int month){
         return paymentRepository.findMonthlyPayments(id, year, month);
     }
+    @Override
+    public BigDecimal getPaymentSum(Long id,int yaer,int month){
+        return paymentRepository.getMonthlyPaymentSum(id, yaer, month);
+    }
 }
