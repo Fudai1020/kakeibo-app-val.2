@@ -6,7 +6,7 @@ import NoPartnerView from "../components/NoPartnerView";
 const Shared = () => {
   //共有相手のUidを管理
   const [sharedWith, setSharedWith] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); //ローディング状態の管理
+  const [loading, setLoading] = useState(false); //ローディング状態の管理
   const [partnerLeft, setPartnerLeft] = useState(false);  //共有相手の解除状態の管理
   //ユーザのUidを保存
   

@@ -11,7 +11,6 @@ const PartnerProfile = ({ partnerUid }: Props) => {
   const [partnerData, setPartnerData] = useState<{
     name?: string;
     email?: string;
-    photoURL?: string;
     memo?:string;
     sharedAt?:Date;
   } | null>(null);
@@ -29,7 +28,7 @@ const PartnerProfile = ({ partnerUid }: Props) => {
     <div className="main-container">
       <h1 style={{ marginTop: '30px', marginBottom: '10px' }}>共有中</h1>
       <div className="profile-icon">
-        <img src={partnerData?.photoURL || icon} alt="" className="profile-img" />
+        <img src={icon} alt="" className="profile-img" />
       </div>
       <h2>{partnerData?.name || 'NoName'}</h2>
       <h2>{partnerData?.email || 'メール未設定'}</h2>
