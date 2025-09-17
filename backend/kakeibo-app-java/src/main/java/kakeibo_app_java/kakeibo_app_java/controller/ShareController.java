@@ -30,7 +30,7 @@ public class ShareController {
     }
     @PostMapping("/join")
     public ResponseEntity<ProfileDto> joinShared(@RequestBody JoinRequest joinRequest){
-        ProfileDto profileDto = shareService.joinShared(joinRequest.getPatnerId(), joinRequest.getCode());
+        ProfileDto profileDto = shareService.joinShared(joinRequest.getPartnerId(), joinRequest.getCode());
         return ResponseEntity.ok(profileDto);
     }
 }

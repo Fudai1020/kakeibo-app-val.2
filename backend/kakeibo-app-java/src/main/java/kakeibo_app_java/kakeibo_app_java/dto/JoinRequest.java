@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class JoinRequest {
-    private Long patnerId;
+    private Long partnerId;
     private String code;
 }

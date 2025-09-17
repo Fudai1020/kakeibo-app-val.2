@@ -61,6 +61,7 @@ public class ShareServiceImpl implements ShareService{
             .startDate(LocalDateTime.now())
             .isActive(true)
             .build();
+        sharedRepository.save(shared);
         return ProfileDto.builder()
             .name(owner.getName())
             .email(owner.getEmail())
