@@ -1,8 +1,14 @@
 import { useState } from "react";
 import '../styles/noPartnerView.css'
 //親から渡される値の型を定義
+type profileDto={
+  name?:string;
+  email?:string;
+  memo?:string;
+  sharedAt?:string;
+}
 type props = {
-    onShareSuccess:(partnerUid:string)=>void;
+    onShareSuccess:(partnerUid:string,profile:profileDto)=>void;
 }
 
 const NoPartnerView = ({onShareSuccess}:props) => {
@@ -12,19 +18,52 @@ const NoPartnerView = ({onShareSuccess}:props) => {
   const [keyword, setKeyword] = useState("");
   const [error, setError] = useState("");
   //ユーザ認証を行う
-  //合言葉を作成する処理
-  const generateKeyword = () => {
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789"; //合言葉で使用する文字列
-    return Array.from({ length: 6 }, //要素数が６つの配列を作成
-      () => chars[Math.floor(Math.random() * chars.length)]).join("");//インデックスの範囲内の数で整数に変換してランダムに配列に格納して結合
+  //招待されたユーザが共有に参加する処理
+  const handleJoinSharing = async () => {
+    try{
+      const partnerId = localStorage.getItem("userId");
+      if(!partnerId){
+        setError('ユーザIDが見つかりません');
+          return;
+      }
+      const res = await fetch("http://localhost:8080/api/shared/join",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({
+          partnerId:Number(partnerId),
+          code:keyword,
+        }),
+      });
+      if(!res.ok){
+        throw new Error("参加できませんでした");
+      }
+      const profile = await res.json();
+      localStorage.setItem("sharedWith",partnerId);
+      onShareSuccess(partnerId,profile);
+      setMode(null);
+    }catch(err){
+      console.error(err);
+      setError("合言葉が違います");
+    }
   };
   //共有を開始する処理
   const handleStartSharing = async () => {
-
-  };
-  //招待されたユーザが共有に参加する処理
-  const handleJoinSharing = async () => {
-    
+    try{
+      const ownerId = localStorage.getItem('userId');
+      const res = await fetch(`http://localhost:8080/api/shared/generate/${ownerId}`,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"}
+      });
+      if(!res.ok) throw new Error("合言葉生成に失敗しました");
+      const generate = await res.text();
+      setKeyword(generate);
+      setMode("start");
+    }catch(err){
+      console.error(err);
+      setError("エラーが発生しました");
+    }
   };
   //共有モードの終了
   const handleBack = () =>{

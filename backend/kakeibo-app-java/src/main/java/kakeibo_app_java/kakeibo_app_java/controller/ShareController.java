@@ -12,6 +12,8 @@ import kakeibo_app_java.kakeibo_app_java.service.ShareService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 
@@ -33,4 +35,10 @@ public class ShareController {
         ProfileDto profileDto = shareService.joinShared(joinRequest.getPartnerId(), joinRequest.getCode());
         return ResponseEntity.ok(profileDto);
     }
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<ProfileDto> getPartnerProfile(@PathVariable Long userId) {
+        ProfileDto profileDto = shareService.getPartnerProfile(userId);
+        return ResponseEntity.ok(profileDto);
+    }
+    
 }

@@ -1,9 +1,9 @@
 package kakeibo_app_java.kakeibo_app_java.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import kakeibo_app_java.kakeibo_app_java.dto.ProfileDto;
@@ -20,10 +20,12 @@ public class ShareServiceImpl implements ShareService{
     private final SharedRepository sharedRepository;
     private final ShareCodeRepository shareCodeRepository;
     private final UserRepository userRepository;
-    public ShareServiceImpl(SharedRepository sharedRepository,ShareCodeRepository shareCodeRepository,UserRepository userRepository){
+    private final SimpMessagingTemplate messagingTemplate;
+    public ShareServiceImpl(SharedRepository sharedRepository,ShareCodeRepository shareCodeRepository,UserRepository userRepository,SimpMessagingTemplate messagingTemplate){
         this.sharedRepository = sharedRepository;
         this.shareCodeRepository = shareCodeRepository;
         this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
     }
     public static final String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
     public static final int codeLength = 6;
@@ -62,10 +64,27 @@ public class ShareServiceImpl implements ShareService{
             .isActive(true)
             .build();
         sharedRepository.save(shared);
+
+        messagingTemplate.convertAndSend("/topic/share/"+owner.getId(),"partnerJoined");
         return ProfileDto.builder()
             .name(owner.getName())
             .email(owner.getEmail())
             .memo(owner.getMemo())
+            .sharedAt(shared.getStartDate().toLocalDate())
+            .build();
+    }
+    @Override
+    public ProfileDto getPartnerProfile(Long userId){
+        Shared shared = sharedRepository.findByOwnerIdOrPartnerId(userId,userId)
+            .orElseThrow(() -> new BadRequestException("共有相手が見つかりません"));
+
+        User partner  = shared.getOwner().getId().equals(userId)
+         ? shared.getPartner() : shared.getOwner();
+        
+        return ProfileDto.builder()
+            .name(partner.getName())
+            .email(partner.getEmail())
+            .memo(partner.getMemo())
             .sharedAt(shared.getStartDate().toLocalDate())
             .build();
     }
