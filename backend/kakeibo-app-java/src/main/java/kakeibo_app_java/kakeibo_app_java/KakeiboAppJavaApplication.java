@@ -9,5 +9,4 @@ public class KakeiboAppJavaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(KakeiboAppJavaApplication.class, args);
 	}
-
 }

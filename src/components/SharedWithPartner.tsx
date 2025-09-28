@@ -9,17 +9,28 @@ type profile={
 }
 type  Props ={
   partnerData:profile|null;
+  onStopShare:()=>void;
 }
 
-const PartnerProfile = ({ partnerData }: Props) => {
+const PartnerProfile = ({ partnerData,onStopShare }: Props) => {
   // 共有相手のプロフィール情報を管理する。各プロパティは存在しない可能性があるためoptional(?:)にしている。
 
   const navigate = useNavigate();
   //共有を停止する処理
   const stopShare = async()=>{
-    
-
-      navigate('/shared')
+    try{
+      const userId = localStorage.getItem("userId");
+      if(!userId) return;
+      await fetch(`http://localhost:8080/api/shared/leave/${userId}`,{
+        method:"DELETE",
+      });
+      localStorage.removeItem("sharedWith");
+      localStorage.removeItem("partnerData");
+      onStopShare();
+      navigate("/shared");
+    }catch(err){
+      console.error(err)
+    }
   }
 //共有相手のUidマウント時、共有相手の情報を取得する
 

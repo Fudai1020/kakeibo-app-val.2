@@ -1,4 +1,4 @@
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 import Header from "../components/Header"
 import SharedWithPartner from "../components/SharedWithPartner";
 import NoPartnerView from "../components/NoPartnerView";
@@ -7,9 +7,9 @@ import useShareSubscribe from "../hooks/useShareSubscribe";
 const Shared = () => {
   //共有相手のUidを管理
   const [sharedWith, setSharedWith] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); //ローディング状態の管理
   const [partnerLeft, setPartnerLeft] = useState(false);  //共有相手の解除状態の管理
     const [partnerData, setPartnerData] = useState<{
+    id:number;
     name?: string;
     email?: string;
     memo?:string;
@@ -25,15 +25,37 @@ const Shared = () => {
       fetch(`http://localhost:8080/api/shared/profile/${userId}`)
       .then((res) => res.json())
       .then((profile)=>{
-        setSharedWith(userId!)
+        setSharedWith(profile.id)
         setPartnerData(profile)
+        localStorage.setItem("sharedWith",profile.id);
+        localStorage.setItem("partnerData",JSON.stringify(profile));
       });
+    }else if(msg === "partnerLeft"){
+      setPartnerData(null);
+      setSharedWith(null);
+      localStorage.removeItem("sharedWith");
+      localStorage.removeItem("partnerData");
+      alert("共有が終了しました");
     }else{
       setPartnerData(msg);
     }
-  })
+  })  
+  useEffect(()=>{
+  try {
+    const storedUid = localStorage.getItem("sharedWith");
+    const storedProfile = localStorage.getItem("partnerData");
 
-  if (loading) return <p style={{color:"white",textAlign:'center',marginTop:50}}>読み込み中...</p>;
+    if (storedUid && storedProfile) {
+      setSharedWith(storedUid);
+      setPartnerData(JSON.parse(storedProfile));
+    }
+  } catch (e) {
+    console.error("localStorage parse error:", e);
+    // 不正なデータが入っていた場合は消して復旧
+    localStorage.removeItem("sharedWith");
+    localStorage.removeItem("partnerData");
+  }
+  },[])
 
   return (
     <div>
@@ -46,7 +68,7 @@ const Shared = () => {
             <button onClick={() => {setSharedWith(null); setPartnerLeft(false);}}>再読み込み</button>
           </div>
         ) : sharedWith ? (  //共有相手のUidが取得できていたら共有相手のプロフィールを表示
-          <SharedWithPartner partnerData={partnerData}/>
+          <SharedWithPartner partnerData={partnerData} onStopShare={()=>{setPartnerData(null);setSharedWith(null)}}/>
         ) : (//共有していない場合NoPartnerViewコンポーネントを表示
           <NoPartnerView onShareSuccess={(uid: string,profile) => {setSharedWith(uid); setPartnerData(profile)}} />
         )}

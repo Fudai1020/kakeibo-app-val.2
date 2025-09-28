@@ -2,6 +2,7 @@ package kakeibo_app_java.kakeibo_app_java.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +41,9 @@ public class ShareController {
         ProfileDto profileDto = shareService.getPartnerProfile(userId);
         return ResponseEntity.ok(profileDto);
     }
-    
+    @DeleteMapping("/leave/{userId}")
+    public ResponseEntity<Void> stopShared(@PathVariable Long userId){
+        shareService.leaveShared(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

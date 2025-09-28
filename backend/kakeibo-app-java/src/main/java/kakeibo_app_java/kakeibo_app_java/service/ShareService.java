@@ -6,4 +6,5 @@ public interface ShareService {
     public String generateShareCode(Long ownerId);
     public ProfileDto joinShared(Long partnerId,String code);
     public ProfileDto getPartnerProfile(Long userId);
+    public void leaveShared(Long userId);
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import '../styles/noPartnerView.css'
 //親から渡される値の型を定義
 type profileDto={
+  id:number;
   name?:string;
   email?:string;
   memo?:string;
@@ -40,8 +41,9 @@ const NoPartnerView = ({onShareSuccess}:props) => {
         throw new Error("参加できませんでした");
       }
       const profile = await res.json();
-      localStorage.setItem("sharedWith",partnerId);
-      onShareSuccess(partnerId,profile);
+      localStorage.setItem("sharedWith",profile.id.toString());
+      localStorage.setItem("partnerData",JSON.stringify(profile))
+      onShareSuccess(profile.id.toString(),profile);
       setMode(null);
     }catch(err){
       console.error(err);

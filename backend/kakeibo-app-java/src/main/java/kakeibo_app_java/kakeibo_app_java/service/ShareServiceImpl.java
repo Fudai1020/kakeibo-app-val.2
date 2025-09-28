@@ -67,6 +67,7 @@ public class ShareServiceImpl implements ShareService{
 
         messagingTemplate.convertAndSend("/topic/share/"+owner.getId(),"partnerJoined");
         return ProfileDto.builder()
+            .id(owner.getId())
             .name(owner.getName())
             .email(owner.getEmail())
             .memo(owner.getMemo())
@@ -82,10 +83,21 @@ public class ShareServiceImpl implements ShareService{
          ? shared.getPartner() : shared.getOwner();
         
         return ProfileDto.builder()
+            .id(partner.getId())
             .name(partner.getName())
             .email(partner.getEmail())
             .memo(partner.getMemo())
             .sharedAt(shared.getStartDate().toLocalDate())
             .build();
+    }
+    @Override
+    public void leaveShared(Long userId){
+        Shared shared = sharedRepository.findByOwnerIdOrPartnerId(userId, userId)
+            .orElseThrow(() -> new BadRequestException("共有関係が見つかりません"));
+        sharedRepository.delete(shared);
+        Long partnerId = shared.getOwner().getId().equals(userId)
+            ? shared.getPartner().getId()
+            : shared.getOwner().getId();
+        messagingTemplate.convertAndSend("/topic/share/"+partnerId,"partnerLeft");
     }
 }
