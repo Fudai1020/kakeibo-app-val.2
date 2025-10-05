@@ -8,6 +8,7 @@ import "../styles/home.css"
 import TransactionFormModal from "../components/TransactionFormModal"
 import { Modal } from "../components/Modal"
 import SavingAllocationModal from "../components/SavingAllocationModal"
+import useShareSubscribe from "../hooks/useShareSubscribe"
 
 
 const Home = () => {
@@ -19,10 +20,38 @@ const Home = () => {
   const [paymentCategories, setPaymentCategories] = useState<string[]>([]); //支出のカテゴリを配列で管理
   const [sharedWith,setSharedWith] = useState<string|null>(null); //共有相手のuidを管理
   const [partnerName,setPartnerName] = useState<string|null>(null); //共有相手の名前を管理
+  const [partnerPayments,setPartnerPayments] = useState<any[]>([]);
   const [refreshTrigger,setRefreshTrigger] = useState(0);
 
   //コンポーネントの初回マウント時にユーザデータを取得
-
+useEffect(()=>{
+  const partnerId = localStorage.getItem("sharedWith");
+  if(!partnerId) return;
+  setSharedWith(partnerId);
+  const year = selectDate.getFullYear();
+  const month = selectDate.getMonth()+1;
+ const fetchApi = async()=>{
+  try{
+    const res = await fetch(`http://localhost:8080/api/payments/public/${partnerId}?year=${year}&month=${month}`)
+    if(!res.ok) throw new Error("fetch失敗");
+    const data = await res.json();
+    setPartnerPayments(data);
+  }catch(err){
+    console.error(err);
+  }
+ }
+ fetchApi();
+},[selectDate,sharedWith])
+const userId = localStorage.getItem("userId");
+useShareSubscribe(userId!,(msg)=>{
+  if(msg == "partnerLeft"){
+    localStorage.removeItem("sharedWith");
+    localStorage.removeItem("partnerData");
+    setSharedWith(null);
+    setPartnerPayments([]);
+    setPartnerName(null);
+  }
+})
   //モーダルの開閉処理
   const openModal = () => setIsopenModal(true);
   const closeModal = () => setIsopenModal(false);
@@ -65,7 +94,8 @@ const Home = () => {
         </div>  
         <div className="payment-layout">
           <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} 
-            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} partnerName={partnerName} refreshTrigger={refreshTrigger}/>
+            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} 
+            partnerName={partnerName} refreshTrigger={refreshTrigger} partnerData={partnerPayments}/>
         </div>
       </div>
       </div>

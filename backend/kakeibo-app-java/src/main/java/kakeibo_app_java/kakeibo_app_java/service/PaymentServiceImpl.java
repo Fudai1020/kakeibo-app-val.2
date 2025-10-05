@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kakeibo_app_java.kakeibo_app_java.dto.PaymentRequest;
+import kakeibo_app_java.kakeibo_app_java.dto.PaymentResponse;
 import kakeibo_app_java.kakeibo_app_java.dto.PaymentSummary;
 import kakeibo_app_java.kakeibo_app_java.entity.Payment;
 import kakeibo_app_java.kakeibo_app_java.entity.PaymentCategory;
@@ -83,5 +84,18 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public BigDecimal getPaymentSum(Long id,int yaer,int month){
         return paymentRepository.getMonthlyPaymentSum(id, yaer, month);
+    }
+    @Override
+    public List<PaymentResponse> getPublicPayments(Long partnerId,int year,int month){
+        List<Payment> payments = paymentRepository.findByUserIdAndIsPrivateFalse(partnerId,year,month);
+        return payments.stream().map(payment -> PaymentResponse.builder()
+                .id(payment.getId())
+                .amount(payment.getAmount())
+                .memo(payment.getMemo())
+                .paymentDate(payment.getPaymentDate())
+                .paymentCategoryId(payment.getPaymentCategory().getCategoryId())
+                .paymentCategoryName(payment.getPaymentCategory().getPaymentCategoryName())
+                .userId(payment.getUser().getId())
+                .build()).toList();
     }
 }

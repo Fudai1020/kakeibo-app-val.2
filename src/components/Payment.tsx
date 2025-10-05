@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import '../styles/payment.css';
 import Charts from './Charts';
 import AnimateNumber from './AnimateNumber';
+import type { PaymentResponse } from '../types/types';
 
 type Props = {
   onAddClick: () => void;
@@ -10,9 +11,10 @@ type Props = {
   sharedWith: string | null;
   partnerName:string|null;
   refreshTrigger?:Number;
+  partnerData:PaymentResponse[];
 };
 
-const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerName,refreshTrigger }: Props) => {
+const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerName,refreshTrigger,partnerData }: Props) => {
   const [totalAmount, setTotalAmount] = useState(0);
   //オブジェクトの型を指定してstate管理
   const [categoryTotals, setCategoryTotals] = useState<{
@@ -35,46 +37,19 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
     (data.categoryTotals ?? []).forEach((c:{ category:string; total:number }) =>{
       categoryMap[c.category] = [{  amount:c.total,isMine:true}];
     });
+    partnerData.forEach((p) =>{
+      const category = p.paymentCategoryName ?? "未分類";
+      if(!categoryMap[category]) categoryMap[category] = [];
+      categoryMap[category].push({amount:Number(p.amount),isMine:false});
+    });
     setCategoryTotals(categoryMap);
+    setTotalAmount(Object.values(categoryMap).flat().reduce((sum,item)=>sum+item.amount,0));
   })
   .catch(err => console.error('支出取得失敗',err));
-  },[selectedDate,sharedWith,refreshTrigger]);
+  },[selectedDate,sharedWith,refreshTrigger,partnerData]);
   
-//取得したデータを処理して月ごと、カテゴリ別に整形する
-  const processPaymentData = (allData: any[], currentUid: string) => {
-    //引数で渡ったデータに、作成日とisMineを追加する
-    const filtered = allData
-      .map((d) => {
-        const createdAt = d.date?.toDate?.() || new Date();
-        return {
-          ...d,
-          createdAt,
-          isMine: !sharedWith || d.uid === currentUid,
-        };
-      })
-      .filter(  //月ごとに絞り込む
-        (d) =>
-          d.createdAt.getFullYear() === selectedDate.getFullYear() &&
-          d.createdAt.getMonth() === selectedDate.getMonth()
-      );
-      //絞り込んだデータの金額を合計する
-    const total = filtered.reduce(
-      (sum, d) => sum + (typeof d.amount === "number" ? d.amount : 0),0);
-    setTotalAmount(total);
-    //オブジェクトの形を指定して箱を用意
-    const categoryMap: { [key: string]: { amount: number; isMine: boolean }[] } = {};
-    filtered.forEach((item) => {
-      const category = item.mainCategory ?? "未分類";   
-      const amount = typeof item.amount === "number" ? item.amount : 0;
-      if (!categoryMap[category]) categoryMap[category] = []; //categoryが存在しなければオブジェクトにcategoryを作成してpush
-      categoryMap[category].push({ amount, isMine: item.isMine });
-    });
-
-    setCategoryTotals(categoryMap);
-  };
-
   const handleClick = () => {
-    setModalType("transaction");
+    setModalType("transaction");  
     onAddClick();
   };
   //チェックボックスで公開、非公開を切り替え
@@ -97,7 +72,7 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
                   const isMine = items.every(item => item.isMine);  //自分のデータがitemのデータと一致しているか判定
 
                   return (
-                    <li key={category} style={{ color: isMine ? '#f8f8ff' : '#fff8dc' , listStyle:sharedWith &&   isMine? 'none':'disc'}}>
+                    <li key={category} style={{ color: isMine ? '#f8f8ff' : '#ff0000ff' , listStyle:sharedWith &&   isMine? 'none':'disc'}}>
                       {sharedWith && isMine && <input type='checkbox' style={{scale:'1.5',marginRight:10,}}
                       checked={privateState[category]??false}
                        onChange={() => handleCheck(category)} />}

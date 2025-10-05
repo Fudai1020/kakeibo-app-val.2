@@ -30,4 +30,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Long>{
             "AND YEAR(p.paymentDate) = :year  "+
             "AND MONTH(p.paymentDate) = :month ")
     List<Payment> findMonthlyPayments(@Param("userId")Long id,@Param("year") int year,@Param("month")int month);
+    @Query("SELECT p FROM Payment p WHERE p.user.id = :userId AND p.isPrivate = false " +
+           "AND YEAR(p.paymentDate) = :year AND MONTH(p.paymentDate) = :month")
+    List<Payment> findByUserIdAndIsPrivateFalse(@Param("userId") Long userId,@Param("year") int year,@Param("month") int month);
 }
