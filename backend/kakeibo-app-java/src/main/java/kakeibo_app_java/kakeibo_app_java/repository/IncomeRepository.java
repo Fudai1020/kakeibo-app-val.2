@@ -23,4 +23,13 @@ public interface IncomeRepository extends JpaRepository<Income,Long>{
             "AND YEAR(i.incomeDate) = :year "+
             "AND MONTH(i.incomeDate) = :month ")
     List<Income> findMonthlyIncomes(@Param("userId") Long id,@Param("year") int year,@Param("month") int month);
+    @Query("""
+                SELECT COALESCE(SUM(i.amount),0)
+                FROM Income i
+                WHERE i.user.id = :userId
+                AND YEAR(i.incomeDate) = ;year
+                AND MONTH(i.incomeDate) = :month
+                AND i.isPrivate = false
+                    """)
+        BigDecimal getPublicIncome(@Param("userId") Long id,@Param("year") int year,@Param("month") int month);
 }

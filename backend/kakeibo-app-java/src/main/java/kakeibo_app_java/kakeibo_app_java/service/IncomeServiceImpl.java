@@ -79,4 +79,8 @@ public class IncomeServiceImpl implements IncomeService{
     public List<Income> findMonthlyIncomes(Long id,int year,int month){
         return incomeRepository.findMonthlyIncomes(id, year, month);
    }
+   @Override
+   public BigDecimal getPublicIncome(Long partnerId,int year,int month){
+        return incomeRepository.getPublicIncome(partnerId, year, month);
+   }
 }

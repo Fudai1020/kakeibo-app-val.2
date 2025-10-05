@@ -11,4 +11,5 @@ public interface IncomeService {
     BigDecimal getMonthlyIncomeSum(Long id,int year,int month);
     List<String> findByUserAndCategoryName(Long id);
     List<Income> findMonthlyIncomes(Long id,int year,int month);
+    BigDecimal getPublicIncome(Long partnerId,int year,int month);
 }
