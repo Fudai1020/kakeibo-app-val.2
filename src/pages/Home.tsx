@@ -20,7 +20,9 @@ const Home = () => {
   const [paymentCategories, setPaymentCategories] = useState<string[]>([]); //支出のカテゴリを配列で管理
   const [sharedWith,setSharedWith] = useState<string|null>(null); //共有相手のuidを管理
   const [partnerName,setPartnerName] = useState<string|null>(null); //共有相手の名前を管理
+  const [partnerIncomes,setPartnerIncomes] = useState<any>(0);
   const [partnerPayments,setPartnerPayments] = useState<any[]>([]);
+  const [partnerSavings,setPartnerSavings] = useState<any[]>([]);
   const [refreshTrigger,setRefreshTrigger] = useState(0);
 
   //コンポーネントの初回マウント時にユーザデータを取得
@@ -32,10 +34,22 @@ useEffect(()=>{
   const month = selectDate.getMonth()+1;
  const fetchApi = async()=>{
   try{
-    const res = await fetch(`http://localhost:8080/api/payments/public/${partnerId}?year=${year}&month=${month}`)
-    if(!res.ok) throw new Error("fetch失敗");
-    const data = await res.json();
-    setPartnerPayments(data);
+    const [incomeRes,paymentRes,savingRes] = await Promise.all([
+      fetch(`http://localhost:8080/api/incomes/public/${partnerId}?year=${year}&month=${month}`),
+      fetch(`http://localhost:8080/api/payments/public/${partnerId}?year=${year}&month=${month}`),
+      fetch(`http://localhost:8080/api/savings/public/${partnerId}?year=${year}&month=${month}`)   
+    ]);
+    if(!incomeRes.ok || !paymentRes.ok || !savingRes.ok ){
+      throw new Error("failed fetch");
+    }
+    const [incomeData,paymentData,savingData] = await Promise.all([
+      incomeRes.json(),
+      paymentRes.json(),
+      savingRes.json()
+    ]);
+    setPartnerIncomes(incomeData);
+    setPartnerPayments(paymentData);
+    setPartnerSavings(savingData);
   }catch(err){
     console.error(err);
   }
@@ -86,10 +100,12 @@ useShareSubscribe(userId!,(msg)=>{
         <div className="left-section">
           <div className="income-layout">
             <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} 
-            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} refreshTrigger={refreshTrigger}/>
+            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} 
+            refreshTrigger={refreshTrigger} partnerIncome={partnerIncomes}/>
           </div>
           <div className="saving-layout">
-          <Saving onAddClick={openModal} setModalType={setModalType}  selectedDate={selectDate} sharedWith={sharedWith} refreshTrigger={refreshTrigger}/>
+          <Saving onAddClick={openModal} setModalType={setModalType}  selectedDate={selectDate} 
+          sharedWith={sharedWith} refreshTrigger={refreshTrigger} />
           </div>
         </div>  
         <div className="payment-layout">

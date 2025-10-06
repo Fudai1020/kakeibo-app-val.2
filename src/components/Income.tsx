@@ -5,30 +5,34 @@ type Props = {
   selectedDate: Date;
   sharedWith: string | null; 
   refreshTrigger?:Number;
+  partnerIncome:any;
 };
 
 import { useEffect, useState } from 'react';
 import '../styles/income.css'
 import AnimateNumber from './AnimateNumber';
 
-const Income = ({ onAddClick, setModalType, selectedDate, sharedWith ,refreshTrigger}: Props) => {
+const Income = ({ onAddClick, setModalType, selectedDate, sharedWith ,refreshTrigger,partnerIncome}: Props) => {
   const [total, setTotal] = useState(0);
 
-  const fetchIncome = async()=>{
+const fetchIncome = async()=>{
   const year = selectedDate.getFullYear();
   const month = selectedDate.getMonth()+1;
   const userId = localStorage.getItem('userId');
  
  if(!userId) return;
-
- fetch(`http://localhost:8080/api/incomes/${userId}/${year}/${month}/sum`)
-  .then(res => res.json())
-  .then(data => {
-    setTotal(data ?? 0);
-  })
-  .catch(err => {
-    console.error('取得に失敗しました',err);
-  });
+try{
+ const res = await fetch(`http://localhost:8080/api/incomes/${userId}/${year}/${month}/sum`)
+ if(!res) throw new Error("failed fetch");
+ const myData = await res.json();
+ if(sharedWith && partnerIncome != null){
+  setTotal((myData ?? 0) + (partnerIncome ?? 0));
+ }else{
+  setTotal(myData ?? 0);
+ }  
+}catch(err){
+ console.error("取得に失敗しました",err);
+}
 }
 useEffect(()=>{
 fetchIncome();
@@ -50,5 +54,4 @@ fetchIncome();
     </div>
   );
 };
-
-export default Income;
+export default Income
