@@ -91,4 +91,10 @@ public class SavingServiceImpl implements SavingService {
             .orElseThrow(()-> new BadRequestException("ユーザが見つかりません"));
         return savingRepository.findCumulativeSummaries(userId, endDate);
     }
+    @Override
+    public List<SavingSummaryDto> getPublicSummaries(Long partnerId,LocalDate endDate){
+        userRepository.findById(partnerId)
+            .orElseThrow(() -> new BadRequestException("ユーザが見つかりません"));
+        return savingRepository.findPublicSummaries(partnerId, endDate);
+    }
 }

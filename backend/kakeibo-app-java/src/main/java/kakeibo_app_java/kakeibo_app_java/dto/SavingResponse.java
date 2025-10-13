@@ -20,11 +20,11 @@ public class SavingResponse {
     private LocalDate createdAt;
     private List<AllocationResponse> allocations;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class AllocationResponse{
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public static class AllocationResponse{
         private Long id;
         private BigDecimal allocationAmount;
         private LocalDate savingDate;

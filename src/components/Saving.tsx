@@ -4,15 +4,18 @@ type props = {
   selectedDate:Date;
   sharedWith:string|null;
   refreshTrigger:number;
+  partnerData:any[];  
 }
 import { useEffect, useState } from 'react';
 import '../styles/saving.css' 
 import AnimateNumber from './AnimateNumber';
 
-const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger}:props) => {
+const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger,partnerData}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
-  const [savingAllocations,setSavingAllocations] = useState<{id:number,name:string,totalAmount:number}[]>([]);//オブジェクトの型を指定してstate管理
-
+  const [savingAllocations,setSavingAllocations] = useState<{id:number,name:string,totalAmount:number}[]>([]);
+  const [margedAllocations,setMargedAllocations] = useState<{id:number,name:string,totalAmount:number}[]>([]);
+  
+  
   //ユーザ情報と共有相手の情報をselectedDate、sharedwithマウント時に取得
  useEffect(()=>{
   const userId = localStorage.getItem('userId');
@@ -26,6 +29,7 @@ const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger}
   const savingUrl = `http://localhost:8080/api/savings/${userId}/${year}/${month}/cumulative`;
   (async()=>{
     try{
+      setSavingAllocations([]);
       const [resIncome,resPayment,resSummary] = await Promise.all([
         fetch(incomeUrl),
         fetch(paymentUrl),
@@ -43,8 +47,21 @@ const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger}
     }
   })();
  },[selectedDate,refreshTrigger])
-//初回マウント時にデータを取得
+useEffect(()=>{
 
+  let marged = [...savingAllocations];
+  if(sharedWith || partnerData?.length) {
+  partnerData.forEach((p) => {
+    const existing = marged.find((m) => m.name === p.name);
+    if(existing){
+      existing.totalAmount += p.totalAmount;
+    }else{
+      marged.push(p);
+    }
+  })
+}
+  setMargedAllocations(marged);
+},[sharedWith,partnerData,savingAllocations]);
 //savingAllocationモーダルを開く情報を親に渡す
 const handleClick = ()=>{
   setModalType("saving");
@@ -56,7 +73,7 @@ const handleClick = ()=>{
         <h2 style={{marginBottom:'-20px'}}><AnimateNumber value={savingTotal} /></h2>
         <h2 style={{marginBottom:'-5px'}}> 貯金一覧</h2>
         <div className='saving-category'>
-          {savingAllocations.map((item,index)=>(
+          {margedAllocations.map((item,index)=>(
             <p key={index}>
               {item.name}：¥{item.totalAmount.toLocaleString()}
             </p>

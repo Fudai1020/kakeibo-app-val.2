@@ -27,7 +27,7 @@ public interface IncomeRepository extends JpaRepository<Income,Long>{
                 SELECT COALESCE(SUM(i.amount),0)
                 FROM Income i
                 WHERE i.user.id = :userId
-                AND YEAR(i.incomeDate) = ;year
+                AND YEAR(i.incomeDate) = :year
                 AND MONTH(i.incomeDate) = :month
                 AND i.isPrivate = false
                     """)

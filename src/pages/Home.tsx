@@ -105,7 +105,7 @@ useShareSubscribe(userId!,(msg)=>{
           </div>
           <div className="saving-layout">
           <Saving onAddClick={openModal} setModalType={setModalType}  selectedDate={selectDate} 
-          sharedWith={sharedWith} refreshTrigger={refreshTrigger} />
+          sharedWith={sharedWith} refreshTrigger={refreshTrigger} partnerData={partnerSavings} />
           </div>
         </div>  
         <div className="payment-layout">

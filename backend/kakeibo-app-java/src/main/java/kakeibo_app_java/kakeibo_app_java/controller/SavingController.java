@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -36,7 +38,7 @@ public class SavingController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/{userId}/{year}/{month}/summary")
-    public List<SavingMonthlySummary> gMonthlySummary(@PathVariable Long userId ,@PathVariable int year,@PathVariable int month) {
+    public List<SavingMonthlySummary> getMonthlySummary(@PathVariable Long userId ,@PathVariable int year,@PathVariable int month) {
         return savingService.getMonthlySavingSummaries(userId, year, month);
     }
     @GetMapping("/{userId}/{year}/{month}/cumulative")
@@ -44,5 +46,11 @@ public class SavingController {
         LocalDate endDate = YearMonth.of(year, month).atEndOfMonth();
         return savingService.getCumulativeSummaries(userId, endDate); 
     }
+    @GetMapping("/public/{partnerId}")
+    public List<SavingSummaryDto> getPublicSummaries(@PathVariable Long partnerId,@RequestParam int year,@RequestParam int month) {
+        LocalDate endDate = YearMonth.of(year, month).atEndOfMonth();
+        return savingService.getPublicSummaries(partnerId, endDate);
+    }
+    
     
 }

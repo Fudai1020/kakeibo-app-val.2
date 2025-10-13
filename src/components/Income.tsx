@@ -25,18 +25,16 @@ try{
  const res = await fetch(`http://localhost:8080/api/incomes/${userId}/${year}/${month}/sum`)
  if(!res) throw new Error("failed fetch");
  const myData = await res.json();
- if(sharedWith && partnerIncome != null){
-  setTotal((myData ?? 0) + (partnerIncome ?? 0));
- }else{
-  setTotal(myData ?? 0);
- }  
+ const myValue = myData ? JSON.parse(myData):0;
+ const partnerValue = sharedWith && partnerIncome ? Number(partnerIncome):0;
+ setTotal(myValue + partnerValue);
 }catch(err){
  console.error("取得に失敗しました",err);
 }
 }
 useEffect(()=>{
 fetchIncome();
-},[selectedDate,refreshTrigger])
+},[selectedDate,refreshTrigger,sharedWith,partnerIncome])
 
  
 
