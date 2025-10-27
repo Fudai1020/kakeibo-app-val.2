@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kakeibo_app_java.kakeibo_app_java.dto.IncomeRequest;
+import kakeibo_app_java.kakeibo_app_java.dto.IncomeResponse;
 import kakeibo_app_java.kakeibo_app_java.entity.Income;
 import kakeibo_app_java.kakeibo_app_java.entity.IncomeCategory;
 import kakeibo_app_java.kakeibo_app_java.entity.User;
@@ -82,5 +83,33 @@ public class IncomeServiceImpl implements IncomeService{
    @Override
    public BigDecimal getPublicIncome(Long partnerId,int year,int month){
         return incomeRepository.getPublicIncome(partnerId, year, month);
+   }
+   @Override
+   public IncomeResponse updateIncome(Long id,IncomeRequest request){
+    Income income =  incomeRepository.findById(id)
+        .orElseThrow(() -> new BadRequestException("収入が見つかりません"));
+    if(request.getName() != null && !request.getName().isBlank()){
+        income.setName(request.getName());
+    }
+    if(request.getAmount() != null){
+        income.setAmount(request.getAmount());
+    }
+    if(request.getMemo() != null){
+        income.setMemo(request.getMemo());
+    }
+    Income updated = incomeRepository.save(income);
+    return IncomeResponse.builder()
+        .id(updated.getId())
+        .name(updated.getName())
+        .amount(updated.getAmount())
+        .memo(updated.getMemo())
+        .build();
+   }
+   @Override
+   public void deleteIncome(Long id){
+    if(!incomeRepository.existsById(id)){
+        throw new BadRequestException("カテゴリが見つかりません");
+    }
+    incomeRepository.deleteById(id);
    }
 }

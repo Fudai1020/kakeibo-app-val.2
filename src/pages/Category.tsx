@@ -9,6 +9,7 @@ type Transaction = {
   id: string;
   amount: number;
   mainCategory: string;
+  categoryId:string | null;
   subCategory: string;
   memo: string;
   createdAt: Date;
@@ -17,8 +18,10 @@ const Category = () => {
   const [date, setDate] = useState(new Date()); //日付を管理
   const [transactions, setTransactions] = useState<Transaction[]>([]);  //取得するデータの管理
   const [type, setType] = useState<"income" | "payment">("income"); // 収入 or 支出の選択の管理
+  const [refreshTrigger,setRefreshTrigger] = useState(false);
   //dateかtypeのマウント時、ユーザのカテゴリデータを取得
   
+  const handleRefresh = () => setRefreshTrigger(prev => !prev); 
   useEffect(()=>{
     const fetchTransactioins = async()=>{
     const year = date.getFullYear();
@@ -35,9 +38,10 @@ const Category = () => {
       const data:Transaction[] = await response.json();
       setTransactions(data.map((item:any)=>{
         return{
-          id: item.id,
+        id: item.id,
         amount: item.amount,
         mainCategory: item.incomeCategoryName || item.paymentCategoryName || "",
+        categoryId:item.incomeCategoryId || item.paymentCategoryId || null,
         subCategory:item.name, // サブカテゴリがあればここに
         memo: item.memo,
         createdAt:new Date(item.incomeDate || item.paymentDate),
@@ -48,7 +52,7 @@ const Category = () => {
     }
   }
   fetchTransactioins();
-  },[date,type])
+  },[date,type,refreshTrigger])
 
 
   return (
@@ -72,7 +76,7 @@ const Category = () => {
       </div>
 
       <div className="category-list">
-      <CategoryList transactions={transactions} />
+      <CategoryList transactions={transactions} onRefresh={handleRefresh} type={type}/>
       </div>
     </div>
   );

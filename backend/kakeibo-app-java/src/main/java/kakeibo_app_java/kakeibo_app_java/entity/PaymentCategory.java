@@ -40,7 +40,7 @@ public class PaymentCategory {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "paymentCategory",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "paymentCategory")
     private List<Payment> payments = new ArrayList<>();
 
 }

@@ -98,4 +98,32 @@ public class PaymentServiceImpl implements PaymentService{
                 .userId(payment.getUser().getId())
                 .build()).toList();
     }
+    @Override
+    public PaymentResponse updatePayments(Long id,PaymentRequest request){
+        Payment payment = paymentRepository.findById(id)
+            .orElseThrow(() -> new BadRequestException("支出データが見つかりません"));
+        if(request.getName() != null && !request.getName().isBlank()){
+            payment.setName(request.getName());
+        }
+        if(request.getAmount() != null){
+            payment.setAmount(request.getAmount());
+        }
+        if(request.getMemo() != null && !request.getMemo().isBlank()){
+            payment.setMemo(request.getMemo());
+        }
+        Payment update = paymentRepository.save(payment);
+        return PaymentResponse.builder()
+            .id(update.getId())
+            .name(update.getName())
+            .amount(update.getAmount())
+            .memo(update.getMemo())
+            .build();
+    }
+    @Override
+    public void deletePayment(Long id){
+        if(!paymentRepository.existsById(id)){
+            throw new BadRequestException("カテゴリが見つかりません");
+        }
+        paymentRepository.deleteById(id);
+    }
 }

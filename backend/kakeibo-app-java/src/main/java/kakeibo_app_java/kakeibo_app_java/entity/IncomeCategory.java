@@ -34,7 +34,7 @@ public class IncomeCategory {
     @JoinColumn(name = "user_id")   
     private User user;
 
-    @OneToMany(mappedBy = "incomeCategory",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "incomeCategory")
     private List<Income> incomes = new ArrayList<>();
 
     public IncomeCategory(){}

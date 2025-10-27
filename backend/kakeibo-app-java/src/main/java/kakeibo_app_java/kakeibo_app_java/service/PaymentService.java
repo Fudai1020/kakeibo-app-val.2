@@ -15,4 +15,6 @@ public interface PaymentService {
     List<Payment> findMonthlyPayments(Long id,int year,int month);
     BigDecimal getPaymentSum(Long id,int year,int month);
     List<PaymentResponse> getPublicPayments(Long partnerId,int year,int month);
+    PaymentResponse updatePayments(Long id,PaymentRequest request);
+    void deletePayment(Long id);
 }

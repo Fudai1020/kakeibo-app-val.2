@@ -11,9 +11,11 @@ type SubCategoryProps = {
     memo: string;
     createdAt: Date;
   }[];  //オブジェクトの配列を意味している
+  onRefresh:()=>void;
+  type:'income'|'payment';
 };
 
-const SubCategory = ({ subTransactions }: SubCategoryProps) => {
+const SubCategory = ({ subTransactions,onRefresh,type }: SubCategoryProps) => {
   //現在編集しているデータのインデックスを管理
   const [editingId,setEditingId] = useState<string | null>(null);
   //入力される値を管理
@@ -37,6 +39,24 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
   }
   //編集した値を保存する処理
   const handleSave = async() => {
+    try{
+      const response = await fetch(`http://localhost:8080/api/${type}s/update/${editingId}`,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name:editSubCategoryName,
+          amount:normalizeAmount(editAmount),
+          memo:editMemo
+        })
+      });
+    if(!response.ok){
+      throw new Error('Failed to update');
+    } 
+    setEditingId(null);
+    onRefresh();
+    }catch(err){
+      console.error(err);
+    }
   }
   //編集を中断する処理
   const canselEdit = (item:typeof subTransactions[number]) =>{
@@ -47,8 +67,20 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
     setEditingId(null);
   } 
   //データを削除する処理
-  const handleDeleteSubCategory = async(subCategory:string) =>{
-    
+  const handleDeleteSubCategory = async(id:string) =>{
+    if(!id) return;
+    if(!window.confirm('削除しますか?')) return;
+    try{
+      const res = await fetch(`http://localhost:8080/api/${type}s/delete/${id}`,{
+        method:'DELETE',
+      });
+      if(!res.ok){
+        throw new Error('削除に失敗しました');
+      }
+      onRefresh();
+    }catch(err){
+      console.error(err);
+    }
   }
 
   return (
@@ -84,7 +116,7 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
             <button className='subicon-button' onClick={()=>handleEditClick(item)} >
                 <FaEdit />
             </button>
-            <button className='subicon-button' onClick={()=>handleDeleteSubCategory(item.subCategory)} >
+            <button className='subicon-button' onClick={()=>handleDeleteSubCategory(item.id)} >
                 <FaTrash />
             </button>
             </div>
