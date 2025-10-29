@@ -9,7 +9,7 @@ type props = {
   onSaveSuccess:()=>void;
 }
 const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
-  const [allocations,setAllocations] = useState<{name:string;amount:string}[]>([]); //データの値をオブジェクトとして管理
+  const [allocations,setAllocations] = useState<{id:string|null;name:string;amount:string}[]>([]); //データの値をオブジェクトとして管理
   const [allocationName,setAllocationName] = useState("");  //貯金名を入力するテキストボックスの値を管理
   const [allocationAmount,setAllocationAmount] = useState("");  //貯金金額を入力するテキストボックスの値を管理
   const [isPrivate,setIsPrivate] = useState("");  //公開か非公開の値を管理
@@ -40,10 +40,11 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
           fetch(incomeUrl,{ signal:ac.signal}),
           fetch(paymentUrl,{ signal:ac.signal}),
         ]);
-        const savingList:Array<{ name:string;amount?:string}>=
+        const savingList:Array<{ id:string|null;name:string;amount?:string}>=
         await resS.json();
         setAllocations(
           (savingList || []).map(x =>({
+            id:x.id ?? null,
             name:x.name,
             amount:String(x.amount ?? 0)
           }))
@@ -125,7 +126,7 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
   const handleClick = () => {
     if(!allocationName.trim()) return;
 
-    setAllocations(prev => [...prev,{name:allocationName.trim(),amount:allocationAmount || '0'}])
+    setAllocations(prev => [...prev,{id:null,name:allocationName.trim(),amount:allocationAmount || '0'}])
     setAllocationName('');
   }
   const saveEdit = (name:string)  =>{
@@ -139,8 +140,22 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
     })
   }
   //追加された貯金名を削除する処理
-  const handleDelete = async(name:string) =>{
-    
+  const handleDelete = async(savingId:string | null,savingName:string) =>{
+    if(!savingId){
+      setAllocations(prev => prev.filter(a=>a.name !== savingName));
+      return;
+    }
+    if(!window.confirm('削除しますか？')) return;
+    try{
+      const res = await fetch(`http://localhost:8080/api/savings/delete/${savingId}`,{
+        method:'DELETE',
+      });
+      if(!res.ok) throw new Error('削除失敗');
+      setAllocations(prev => prev.filter(a => a.id !== savingId));
+      onSaveSuccess();
+    }catch(err){
+      console.error(err);
+    }
   }
   return (
     <div className="saving-container">
@@ -186,7 +201,7 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
         )}
 
         <button
-          onClick={() => handleDelete(item.name)}
+          onClick={() => handleDelete(item.id,item.name)}
           className="icon"
         >
           <FaTrash />

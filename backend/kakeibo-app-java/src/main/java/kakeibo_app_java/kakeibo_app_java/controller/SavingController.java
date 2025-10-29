@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +52,10 @@ public class SavingController {
         LocalDate endDate = YearMonth.of(year, month).atEndOfMonth();
         return savingService.getPublicSummaries(partnerId, endDate);
     }
-    
+    @DeleteMapping("/delete/{savingId}")
+    public ResponseEntity<Void> deleteSaving(@PathVariable Long savingId){
+        savingService.deleteSaving(savingId);
+        return ResponseEntity.noContent().build();
+    }
     
 }

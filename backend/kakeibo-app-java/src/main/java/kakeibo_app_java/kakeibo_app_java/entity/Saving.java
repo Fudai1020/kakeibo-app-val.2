@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,7 +41,7 @@ public class Saving {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;
-    @OneToMany(mappedBy = "saving",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "saving")
     @Builder.Default
     private List<SavingAllocation> allocations =new ArrayList<>();
 }

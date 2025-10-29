@@ -13,5 +13,6 @@ public interface SavingService {
     List<SavingMonthlySummary> getMonthlySavingSummaries(Long userId,int year,int month);
     List<SavingSummaryDto> getCumulativeSummaries(Long userId,LocalDate endDate);
     List<SavingSummaryDto> getPublicSummaries(Long userId,LocalDate endDate);
+    void deleteSaving(Long id);
 }
 

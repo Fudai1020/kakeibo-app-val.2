@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -24,4 +25,7 @@ public interface SavingAllocationRepository extends JpaRepository<SavingAllocati
             AND allocationDate BETWEEN :start AND :end 
             """)
     BigDecimal findMonthlyAmountBySavingId(@Param("savingId") Long savingId,@Param("start") LocalDate start,@Param("end") LocalDate end);
+    @Modifying
+    @Query("DELETE FROM SavingAllocation sa WHERE sa.saving.id = :savingId")
+    void deleteAllByAllocations(@Param("savingId") Long savingId);
 }

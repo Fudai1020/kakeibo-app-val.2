@@ -97,4 +97,12 @@ public class SavingServiceImpl implements SavingService {
             .orElseThrow(() -> new BadRequestException("ユーザが見つかりません"));
         return savingRepository.findPublicSummaries(partnerId, endDate);
     }
+    @Override
+    public void deleteSaving(Long id){
+        if(!savingRepository.existsById(id)){
+            throw new BadRequestException("貯金が見つかりません");
+        }
+        savingAllocationRepository.deleteAllByAllocations(id);
+         savingRepository.deleteById(id);
+    }
 }
