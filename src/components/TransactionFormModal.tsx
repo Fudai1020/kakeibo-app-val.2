@@ -1,5 +1,6 @@
   import { useEffect, useState } from 'react';
   import '../styles/transactionFormModal.css';
+import { apiFetch } from '../utils/api';
 
   //親から渡されたpropsの方を定義する
   type Props = {
@@ -45,7 +46,7 @@
       const userId = localStorage.getItem('userId');
       const settype = type == 'income' ? 'incomes':'payments';
 
-      fetch(`http://localhost:8080/api/${settype}/user/${userId}`)
+      apiFetch(`http://localhost:8080/api/${settype}/user/${userId}`)
         .then(res => res.json())
         .then((data:string[])=>{
           if(type === 'income'){
@@ -78,7 +79,7 @@
       }
       const url = type === 'income' ? 'http://localhost:8080/api/incomes/save' : 'http://localhost:8080/api/payments/save'
     
-      const response = await fetch(url,{
+      const response = await apiFetch(url,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify(payload),

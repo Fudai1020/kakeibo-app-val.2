@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import'../styles/editProfile.css';
 import icon from '../assets/default.png'
 import {  useNavigate } from "react-router-dom";
+import { apiFetch } from "../utils/api";
 
 
 
@@ -30,7 +31,7 @@ const handleEditSave = async() =>{
     const id = localStorage.getItem('userId');
 
     try{
-        const response = await fetch(`http://localhost:8080/api/users/${id}/editProfile`,{
+        const response = await apiFetch(`http://localhost:8080/api/users/${id}/editProfile`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

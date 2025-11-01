@@ -3,6 +3,7 @@ import Header from "../components/Header"
 import '../styles/changePassword.css'
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { apiFetch } from "../utils/api";
 
 
 const ChangePassword = () => {
@@ -25,7 +26,7 @@ const ChangePassword = () => {
             return;
         }
         try{
-            const response = await fetch(`http://localhost:8080/api/users/${id}/changePassword`,{
+            const response = await apiFetch(`http://localhost:8080/api/users/${id}/changePassword`,{
                 method:'PUT',
                 headers:{
                     'Content-Type':'application/json',

@@ -6,8 +6,9 @@ const SettingModal = () => {
   const navigate = useNavigate(); //フックスを定義する
   //ログアウト処理
   const logout = async() =>{
-    
-      navigate('/'); //ログイン画面遷移
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    navigate('/'); //ログイン画面遷移
     
   }
   return (

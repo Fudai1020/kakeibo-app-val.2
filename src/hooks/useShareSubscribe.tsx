@@ -5,7 +5,8 @@ import SockJS from "sockjs-client";
 const useShareSubscribe = (userId:string,onMessage:(msg:any)=>void) => {
     useEffect(()=>{
         if(!userId) return;
-        const socket = new SockJS("http://localhost:8080/ws");
+        const token = localStorage.getItem("token")
+        const socket = new SockJS(`http://localhost:8080/ws?=${token}`);
         const client = new Client({
             webSocketFactory:()=>socket,
             reconnectDelay:5000,

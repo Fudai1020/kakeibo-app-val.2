@@ -2,6 +2,7 @@ import Header from "../components/Header"
 import icon from '../assets/default.png'
 import '../styles/userProfile.css'
 import { useEffect, useState } from "react"
+import { apiFetch } from "../utils/api"
 
 
 const UserProfile = () => {
@@ -11,7 +12,7 @@ const UserProfile = () => {
     useEffect(()=>{
       const id = localStorage.getItem('userId');
       if(!id) return;
-      fetch(`http://localhost:8080/api/users/${id}`)
+      apiFetch(`http://localhost:8080/api/users/${id}`)
           .then(res => res.json())
           .then(data =>{
             setUserData(data);

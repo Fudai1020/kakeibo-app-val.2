@@ -1,5 +1,6 @@
 import icon from '../assets/default.png'
 import {  useNavigate } from 'react-router-dom';
+import { apiFetch } from '../utils/api';
 
 type profile={
   name?:string;
@@ -21,7 +22,7 @@ const PartnerProfile = ({ partnerData,onStopShare }: Props) => {
     try{
       const userId = localStorage.getItem("userId");
       if(!userId) return;
-      await fetch(`http://localhost:8080/api/shared/leave/${userId}`,{
+      await apiFetch(`http://localhost:8080/api/shared/leave/${userId}`,{
         method:"DELETE",
       });
       localStorage.removeItem("sharedWith");

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import '../styles/noPartnerView.css'
+import { apiFetch } from "../utils/api";
 //親から渡される値の型を定義
 type profileDto={
   id:number;
@@ -27,7 +28,7 @@ const NoPartnerView = ({onShareSuccess}:props) => {
         setError('ユーザIDが見つかりません');
           return;
       }
-      const res = await fetch("http://localhost:8080/api/shared/join",{
+      const res = await apiFetch("http://localhost:8080/api/shared/join",{
         method:"POST",
         headers:{
           "Content-Type":"application/json",
@@ -54,7 +55,7 @@ const NoPartnerView = ({onShareSuccess}:props) => {
   const handleStartSharing = async () => {
     try{
       const ownerId = localStorage.getItem('userId');
-      const res = await fetch(`http://localhost:8080/api/shared/generate/${ownerId}`,{
+      const res = await apiFetch(`http://localhost:8080/api/shared/generate/${ownerId}`,{
         method:"POST",
         headers:{"Content-Type":"application/json"}
       });

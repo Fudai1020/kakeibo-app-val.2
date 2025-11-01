@@ -2,6 +2,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import '../styles/category.css'
 import { useState } from 'react';
 import AnimateNumber from './AnimateNumber';
+import { apiFetch } from '../utils/api';
 //親から渡されるpropsの配列の中身の型を指定
 type SubCategoryProps = {
   subTransactions: {
@@ -40,7 +41,7 @@ const SubCategory = ({ subTransactions,onRefresh,type }: SubCategoryProps) => {
   //編集した値を保存する処理
   const handleSave = async() => {
     try{
-      const response = await fetch(`http://localhost:8080/api/${type}s/update/${editingId}`,{
+      const response = await apiFetch(`http://localhost:8080/api/${type}s/update/${editingId}`,{
         method:'PUT',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -71,7 +72,7 @@ const SubCategory = ({ subTransactions,onRefresh,type }: SubCategoryProps) => {
     if(!id) return;
     if(!window.confirm('削除しますか?')) return;
     try{
-      const res = await fetch(`http://localhost:8080/api/${type}s/delete/${id}`,{
+      const res = await apiFetch(`http://localhost:8080/api/${type}s/delete/${id}`,{
         method:'DELETE',
       });
       if(!res.ok){

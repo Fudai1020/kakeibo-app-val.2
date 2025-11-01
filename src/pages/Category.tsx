@@ -4,6 +4,7 @@ import MonthNavigate from "../components/MonthNavigate";
 import CategoryList from "../components/CategoryList";
 
 import '../styles/category.css'
+import { apiFetch } from "../utils/api";
 //新しくtransaction型というオブジェクトの型を定義
 type Transaction = {
   id: string;
@@ -29,7 +30,7 @@ const Category = () => {
     const userId = localStorage.getItem('userId');
     if(!userId) return;
     try{
-      const response = await fetch(`http://localhost:8080/api/${type}s/${userId}/${year}/${month}`,
+      const response = await apiFetch(`http://localhost:8080/api/${type}s/${userId}/${year}/${month}`,
         {
           credentials:'include',
         }

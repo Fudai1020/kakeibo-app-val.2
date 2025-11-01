@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import '../styles/savingAllocationModal.css'
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import AnimateNumber from './AnimateNumber';
+import { apiFetch } from '../utils/api';
 //プロップスの方を指定する
 type props = {
     onClose:() => void;
@@ -36,9 +37,9 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
       
       try{
         const [resS,resI,resP] = await Promise.all([
-          fetch(savingUrl,{ signal:ac.signal}),
-          fetch(incomeUrl,{ signal:ac.signal}),
-          fetch(paymentUrl,{ signal:ac.signal}),
+          apiFetch(savingUrl,{ signal:ac.signal}),
+          apiFetch(incomeUrl,{ signal:ac.signal}),
+          apiFetch(paymentUrl,{ signal:ac.signal}),
         ]);
         const savingList:Array<{ id:string|null;name:string;amount?:string}>=
         await resS.json();
@@ -82,7 +83,7 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
     
     try{
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:8080/api/savings/save",{
+      const response = await apiFetch("http://localhost:8080/api/savings/save",{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
@@ -147,7 +148,7 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
     }
     if(!window.confirm('削除しますか？')) return;
     try{
-      const res = await fetch(`http://localhost:8080/api/savings/delete/${savingId}`,{
+      const res = await apiFetch(`http://localhost:8080/api/savings/delete/${savingId}`,{
         method:'DELETE',
       });
       if(!res.ok) throw new Error('削除失敗');

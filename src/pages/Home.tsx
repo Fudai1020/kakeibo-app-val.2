@@ -9,6 +9,7 @@ import TransactionFormModal from "../components/TransactionFormModal"
 import { Modal } from "../components/Modal"
 import SavingAllocationModal from "../components/SavingAllocationModal"
 import useShareSubscribe from "../hooks/useShareSubscribe"
+import { apiFetch } from "../utils/api"
 
 
 const Home = () => {
@@ -35,9 +36,9 @@ useEffect(()=>{
  const fetchApi = async()=>{
   try{
     const [incomeRes,paymentRes,savingRes] = await Promise.all([
-      fetch(`http://localhost:8080/api/incomes/public/${partnerId}?year=${year}&month=${month}`),
-      fetch(`http://localhost:8080/api/payments/public/${partnerId}?year=${year}&month=${month}`),
-      fetch(`http://localhost:8080/api/savings/public/${partnerId}?year=${year}&month=${month}`)   
+      apiFetch(`http://localhost:8080/api/incomes/public/${partnerId}?year=${year}&month=${month}`),
+      apiFetch(`http://localhost:8080/api/payments/public/${partnerId}?year=${year}&month=${month}`),
+      apiFetch(`http://localhost:8080/api/savings/public/${partnerId}?year=${year}&month=${month}`)   
     ]);
     if(!incomeRes.ok || !paymentRes.ok || !savingRes.ok ){
       throw new Error("failed fetch");

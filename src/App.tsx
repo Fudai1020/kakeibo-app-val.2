@@ -22,27 +22,39 @@ function App() {
   <Route path="/register" element={<Register />} />
   
   <Route path="/home" element={
+    <PrivateRoute>
       <Home />
+    </PrivateRoute>
   } />
 
   <Route path="/category" element={
+    <PrivateRoute>
       <Category />
+      </PrivateRoute>
   } />
 
   <Route path="/shared" element={
+    <PrivateRoute>
       <Shared />
+      </PrivateRoute>
   } />
 
-  <Route path="/userProfile" element={  
+  <Route path="/userProfile" element={ 
+    <PrivateRoute>
       <UserProfile />
+      </PrivateRoute> 
   } />
 
   <Route path="/changePassword" element={
+    <PrivateRoute>
       <ChangePassword />
+      </PrivateRoute> 
   } />
 
   <Route path="/editProfile" element={
+    <PrivateRoute>
       <EditProfile />
+      </PrivateRoute>
   } />
 </Routes>
     

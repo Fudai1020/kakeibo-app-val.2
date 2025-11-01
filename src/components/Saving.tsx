@@ -9,6 +9,7 @@ type props = {
 import { useEffect, useState } from 'react';
 import '../styles/saving.css' 
 import AnimateNumber from './AnimateNumber';
+import { apiFetch } from '../utils/api';
 
 const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger,partnerData}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
@@ -31,9 +32,9 @@ const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger,
     try{
       setSavingAllocations([]);
       const [resIncome,resPayment,resSummary] = await Promise.all([
-        fetch(incomeUrl),
-        fetch(paymentUrl),
-        fetch(savingUrl),
+        apiFetch(incomeUrl),
+        apiFetch(paymentUrl),
+        apiFetch(savingUrl),
       ]);
       const txtIncome = await resIncome.text();
       const txtPayment = await resPayment.text();

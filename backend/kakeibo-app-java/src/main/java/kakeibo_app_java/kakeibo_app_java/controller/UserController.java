@@ -9,8 +9,12 @@ import kakeibo_app_java.kakeibo_app_java.dto.LoginRequest;
 import kakeibo_app_java.kakeibo_app_java.dto.RegisterRequest;
 import kakeibo_app_java.kakeibo_app_java.dto.UserResponse;
 import kakeibo_app_java.kakeibo_app_java.entity.User;
+import kakeibo_app_java.kakeibo_app_java.security.JwtTokenProvider;
 import kakeibo_app_java.kakeibo_app_java.service.UserService;
 
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +28,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
-    public UserController(UserService userService){
+    public UserController(UserService userService,JwtTokenProvider jwtTokenProvider){
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
     
     @PostMapping("/register")
@@ -36,9 +42,13 @@ public class UserController {
         return new UserResponse(user);
     }
     @PostMapping("/login")
-    public UserResponse login(@RequestBody LoginRequest request) {
-        User user = userService.login(request.getEmail(), request.getPassword());
-        return new UserResponse(user);
+    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+        User user = userService.login(request.getEmail(),request.getPassword());
+        if(user == null){
+            return ResponseEntity.status(401).body("Invalid emal or password");
+        }
+        String token = jwtTokenProvider.createToken(user.getEmail());
+        return ResponseEntity.ok(Map.of("token",token,"userId",user.getId(),"email",user.getEmail()));
     }
     @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable Long id) {

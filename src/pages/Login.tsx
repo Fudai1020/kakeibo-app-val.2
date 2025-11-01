@@ -16,6 +16,7 @@ const Login = () => {
     e.preventDefault();
     if(!email.includes('@')){
       setError('有効なメールアドレスを入力してください');
+      return;
     }
     try{
       const response = await fetch('http://localhost:8080/api/users/login',{
@@ -30,7 +31,8 @@ const Login = () => {
       });
       if(response.ok){
         const data = await response.json();
-        localStorage.setItem('userId',data.id);
+        localStorage.setItem("token",data.token);
+        localStorage.setItem('userId',data.userId);
         alert('ログイン成功！');
         setError('');
         navigate('/Home')
