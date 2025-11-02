@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://kakeibo-app-val-2.vercel.app")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

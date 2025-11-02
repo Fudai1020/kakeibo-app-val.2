@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(origins = "https://kakeibo-app-val-2.vercel.app",allowCredentials = "true")
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {

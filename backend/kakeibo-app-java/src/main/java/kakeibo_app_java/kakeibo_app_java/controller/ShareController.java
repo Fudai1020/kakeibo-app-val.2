@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(origins = "https://kakeibo-app-val-2.vercel.app",allowCredentials = "true")
 @RequestMapping("/api/shared")
 public class ShareController {
     private final ShareService shareService;
