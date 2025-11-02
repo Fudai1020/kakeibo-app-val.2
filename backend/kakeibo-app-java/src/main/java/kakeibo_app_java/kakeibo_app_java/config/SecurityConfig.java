@@ -28,7 +28,7 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                     .cors(cors -> cors.configurationSource(request -> {
                         var corsConfig = new CorsConfiguration();
-                        corsConfig.setAllowedOrigins(List.of("http://localhost:5173"));
+                        corsConfig.setAllowedOrigins(List.of("https://kakeibo-app-val-2.vercel.app","http://localhost:5173"));
                         corsConfig.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
                         corsConfig.setAllowedHeaders(List.of("*"));
                         corsConfig.setAllowCredentials(true);
