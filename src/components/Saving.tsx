@@ -25,9 +25,9 @@ const Saving = ({onAddClick,setModalType,selectedDate,sharedWith,refreshTrigger,
   const year = selectedDate.getFullYear();
   const month = selectedDate.getMonth()+1;
 
-  const incomeUrl = `http://localhost:8080/api/incomes/${userId}/${year}/${month}/sum`;
-  const paymentUrl = `http://localhost:8080/api/payments/${userId}/${year}/${month}/sum`;
-  const savingUrl = `http://localhost:8080/api/savings/${userId}/${year}/${month}/cumulative`;
+  const incomeUrl = `${import.meta.env.VITE_API_URL}/api/incomes/${userId}/${year}/${month}/sum`;
+  const paymentUrl = `${import.meta.env.VITE_API_URL}/api/payments/${userId}/${year}/${month}/sum`;
+  const savingUrl = `${import.meta.env.VITE_API_URL}/api/savings/${userId}/${year}/${month}/cumulative`;
   (async()=>{
     try{
       setSavingAllocations([]);

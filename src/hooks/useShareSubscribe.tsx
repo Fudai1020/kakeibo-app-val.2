@@ -6,7 +6,7 @@ const useShareSubscribe = (userId:string,onMessage:(msg:any)=>void) => {
     useEffect(()=>{
         if(!userId) return;
         const token = localStorage.getItem("token")
-        const socket = new SockJS(`http://localhost:8080/ws?=${token}`);
+        const socket = new SockJS(`${import.meta.env.VITE_API_URL}/ws?=${token}`);
         const client = new Client({
             webSocketFactory:()=>socket,
             reconnectDelay:5000,

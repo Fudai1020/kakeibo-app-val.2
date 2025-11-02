@@ -23,7 +23,7 @@ const fetchIncome = async()=>{
  
  if(!userId) return;
 try{
- const res = await apiFetch(`http://localhost:8080/api/incomes/${userId}/${year}/${month}/sum`)
+ const res = await apiFetch(`${import.meta.env.VITE_API_URL}/api/incomes/${userId}/${year}/${month}/sum`)
  if(!res) throw new Error("failed fetch");
  const myData = await res.json();
  const myValue = myData ? JSON.parse(myData):0;

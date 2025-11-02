@@ -22,7 +22,7 @@ const PartnerProfile = ({ partnerData,onStopShare }: Props) => {
     try{
       const userId = localStorage.getItem("userId");
       if(!userId) return;
-      await apiFetch(`http://localhost:8080/api/shared/leave/${userId}`,{
+      await apiFetch(`${import.meta.env.VITE_API_URL}/api/shared/leave/${userId}`,{
         method:"DELETE",
       });
       localStorage.removeItem("sharedWith");

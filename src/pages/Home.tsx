@@ -36,9 +36,9 @@ useEffect(()=>{
  const fetchApi = async()=>{
   try{
     const [incomeRes,paymentRes,savingRes] = await Promise.all([
-      apiFetch(`http://localhost:8080/api/incomes/public/${partnerId}?year=${year}&month=${month}`),
-      apiFetch(`http://localhost:8080/api/payments/public/${partnerId}?year=${year}&month=${month}`),
-      apiFetch(`http://localhost:8080/api/savings/public/${partnerId}?year=${year}&month=${month}`)   
+      apiFetch(`${import.meta.env.VITE_API_URL}/api/incomes/public/${partnerId}?year=${year}&month=${month}`),
+      apiFetch(`${import.meta.env.VITE_API_URL}/api/payments/public/${partnerId}?year=${year}&month=${month}`),
+      apiFetch(`${import.meta.env.VITE_API_URL}/api/savings/public/${partnerId}?year=${year}&month=${month}`)   
     ]);
     if(!incomeRes.ok || !paymentRes.ok || !savingRes.ok ){
       throw new Error("failed fetch");

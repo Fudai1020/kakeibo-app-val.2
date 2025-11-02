@@ -28,9 +28,9 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
     if(!userId) return;
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth()+1;
-    const savingUrl = `http://localhost:8080/api/savings/${userId}/${year}/${month}/summary`;
-    const incomeUrl = `http://localhost:8080/api/incomes/${userId}/${year}/${month}/sum`;
-    const paymentUrl = `http://localhost:8080/api/payments/${userId}/${year}/${month}/sum`;
+    const savingUrl = `${import.meta.env.VITE_API_URL}/api/savings/${userId}/${year}/${month}/summary`;
+    const incomeUrl = `${import.meta.env.VITE_API_URL}/api/incomes/${userId}/${year}/${month}/sum`;
+    const paymentUrl = `${import.meta.env.VITE_API_URL}/api/payments/${userId}/${year}/${month}/sum`;
     const ac = new AbortController();
 
     (async ()=>{

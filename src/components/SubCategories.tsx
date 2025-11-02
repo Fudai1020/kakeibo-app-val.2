@@ -41,7 +41,7 @@ const SubCategory = ({ subTransactions,onRefresh,type }: SubCategoryProps) => {
   //編集した値を保存する処理
   const handleSave = async() => {
     try{
-      const response = await apiFetch(`http://localhost:8080/api/${type}s/update/${editingId}`,{
+      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/${type}s/update/${editingId}`,{
         method:'PUT',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -72,7 +72,7 @@ const SubCategory = ({ subTransactions,onRefresh,type }: SubCategoryProps) => {
     if(!id) return;
     if(!window.confirm('削除しますか?')) return;
     try{
-      const res = await apiFetch(`http://localhost:8080/api/${type}s/delete/${id}`,{
+      const res = await apiFetch(`${import.meta.env.VITE_API_URL}/api/${type}s/delete/${id}`,{
         method:'DELETE',
       });
       if(!res.ok){

@@ -30,7 +30,7 @@ const Category = () => {
     const userId = localStorage.getItem('userId');
     if(!userId) return;
     try{
-      const response = await apiFetch(`http://localhost:8080/api/${type}s/${userId}/${year}/${month}`,
+      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/${type}s/${userId}/${year}/${month}`,
         {
           credentials:'include',
         }

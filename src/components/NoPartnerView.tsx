@@ -28,7 +28,7 @@ const NoPartnerView = ({onShareSuccess}:props) => {
         setError('ユーザIDが見つかりません');
           return;
       }
-      const res = await apiFetch("http://localhost:8080/api/shared/join",{
+      const res = await apiFetch(`${import.meta.env.VITE_API_URL}/api/shared/join`,{
         method:"POST",
         headers:{
           "Content-Type":"application/json",
@@ -55,7 +55,7 @@ const NoPartnerView = ({onShareSuccess}:props) => {
   const handleStartSharing = async () => {
     try{
       const ownerId = localStorage.getItem('userId');
-      const res = await apiFetch(`http://localhost:8080/api/shared/generate/${ownerId}`,{
+      const res = await apiFetch(`${import.meta.env.VITE_API_URL}/api/shared/generate/${ownerId}`,{
         method:"POST",
         headers:{"Content-Type":"application/json"}
       });

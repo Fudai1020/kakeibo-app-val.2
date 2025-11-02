@@ -46,7 +46,7 @@ import { apiFetch } from '../utils/api';
       const userId = localStorage.getItem('userId');
       const settype = type == 'income' ? 'incomes':'payments';
 
-      apiFetch(`http://localhost:8080/api/${settype}/user/${userId}`)
+      apiFetch(`${import.meta.env.VITE_API_URL}/api/${settype}/user/${userId}`)
         .then(res => res.json())
         .then((data:string[])=>{
           if(type === 'income'){
@@ -77,7 +77,7 @@ import { apiFetch } from '../utils/api';
         payload.paymentDate = date;
         payload.paymentCategoryName = selectedMainCategory;
       }
-      const url = type === 'income' ? 'http://localhost:8080/api/incomes/save' : 'http://localhost:8080/api/payments/save'
+      const url = type === 'income' ? `${import.meta.env.VITE_API_URL}/api/incomes/save` : `${import.meta.env.VITE_API_URL}/api/payments/save`
     
       const response = await apiFetch(url,{
         method:'POST',

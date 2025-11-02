@@ -45,7 +45,7 @@ const CategoryList = ({ transactions,onRefresh,type}: Props) => {
    if(!categoryId) return;
    if(!window.confirm('削除しますか？')) return;
    try{
-    const res = await apiFetch(`http://localhost:8080/api/${type}s/deleteCategory/${categoryId}`,{
+    const res = await apiFetch(`${import.meta.env.VITE_API_URL}/api/${type}s/deleteCategory/${categoryId}`,{
       method:'DELETE',
     });
     if(!res.ok) throw new Error('削除失敗');
@@ -63,7 +63,7 @@ const CategoryList = ({ transactions,onRefresh,type}: Props) => {
   //編集した内容を保存
   const handleSave = async(categoryId:string|null)=>{
     try{
-      const res = await apiFetch(`http://localhost:8080/api/${type}s/updateCategory/${categoryId}`,{
+      const res = await apiFetch(`${import.meta.env.VITE_API_URL}/api/${type}s/updateCategory/${categoryId}`,{
         method:'PUT',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({

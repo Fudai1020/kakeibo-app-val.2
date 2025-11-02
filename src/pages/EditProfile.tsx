@@ -19,7 +19,7 @@ const EditProfile = () => {
     //Firebaseからユーザ情報を初回マウント時取得
    useEffect(()=>{
     const id = localStorage.getItem('userId');
-    fetch(`http://localhost:8080/api/users/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`)
         .then(res => res.json())
         .then(data =>{
             setOriginalName(data.name);
@@ -31,7 +31,7 @@ const handleEditSave = async() =>{
     const id = localStorage.getItem('userId');
 
     try{
-        const response = await apiFetch(`http://localhost:8080/api/users/${id}/editProfile`,{
+        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/users/${id}/editProfile`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

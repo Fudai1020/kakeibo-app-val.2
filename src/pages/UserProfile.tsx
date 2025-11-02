@@ -12,7 +12,7 @@ const UserProfile = () => {
     useEffect(()=>{
       const id = localStorage.getItem('userId');
       if(!id) return;
-      apiFetch(`http://localhost:8080/api/users/${id}`)
+      apiFetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`)
           .then(res => res.json())
           .then(data =>{
             setUserData(data);

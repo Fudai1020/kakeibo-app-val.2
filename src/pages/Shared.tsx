@@ -3,6 +3,7 @@ import Header from "../components/Header"
 import SharedWithPartner from "../components/SharedWithPartner";
 import NoPartnerView from "../components/NoPartnerView";
 import useShareSubscribe from "../hooks/useShareSubscribe";
+import { apiFetch } from "../utils/api";
 
 const Shared = () => {
   //共有相手のUidを管理
@@ -22,7 +23,7 @@ const Shared = () => {
     console.log("WebSocketから届いた：",msg);
 
     if(msg === "partnerJoined"){
-      fetch(`http://localhost:8080/api/shared/profile/${userId}`)
+      apiFetch(`${import.meta.env.VITE_API_URL}/api/shared/profile/${userId}`)
       .then((res) => res.json())
       .then((profile)=>{
         setSharedWith(profile.id)

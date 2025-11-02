@@ -30,7 +30,7 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
     const month = selectedDate.getMonth()+1;
     if(!userId) return;
 
-    apiFetch(`http://localhost:8080/api/payments/${userId}/${year}/${month}/summary`)
+    apiFetch(`${import.meta.env.VITE_API_URL}/api/payments/${userId}/${year}/${month}/summary`)
     .then(res => res.json())
   .then(data => {
     setTotalAmount(data.totalAmount);

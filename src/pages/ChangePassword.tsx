@@ -26,7 +26,7 @@ const ChangePassword = () => {
             return;
         }
         try{
-            const response = await apiFetch(`http://localhost:8080/api/users/${id}/changePassword`,{
+            const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/users/${id}/changePassword`,{
                 method:'PUT',
                 headers:{
                     'Content-Type':'application/json',
