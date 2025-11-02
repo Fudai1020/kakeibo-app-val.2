@@ -12,7 +12,7 @@ type props = {
 const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
   const [allocations,setAllocations] = useState<{id:string|null;name:string;amount:string}[]>([]); //データの値をオブジェクトとして管理
   const [allocationName,setAllocationName] = useState("");  //貯金名を入力するテキストボックスの値を管理
-  const [allocationAmount,setAllocationAmount] = useState("");  //貯金金額を入力するテキストボックスの値を管理
+  const [allocationAmount,_setAllocationAmount] = useState("");  //貯金金額を入力するテキストボックスの値を管理
   const [isPrivate,setIsPrivate] = useState("");  //公開か非公開の値を管理
   const [balance,setBalance] = useState(0);
   const [editingDrafts,setEditingDrafts] = useState<Record<string,string>>({});

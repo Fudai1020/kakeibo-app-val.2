@@ -23,7 +23,7 @@ import { apiFetch } from '../utils/api';
     onSaveSuccess
   }: Props) => {
     const [view, setView] = useState<'form' | 'category'>('form'); //モーダル内の画面の切り替えの管理
-    const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null); //アニメーションの方向の管理
+    const [_slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null); //アニメーションの方向の管理
     const [animeClass, setAnimeClass] = useState(''); //アニメーションのクラスの管理
     const [mainCategoryInput, setMainCategoryInput] = useState(''); //メインカテゴリを入力するテキストボックス内の入力値を管理
     const [selectedMainCategory, setSelectedMainCategory] = useState(''); //セレクトボックス内の値を管理

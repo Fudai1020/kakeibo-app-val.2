@@ -21,7 +21,7 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
   const [categoryTotals, setCategoryTotals] = useState<{
     [key: string]: { amount: number; isMine: boolean }[];
   }>({});
-  const [privateState,setPrivateState] = useState<{[key:string]:boolean}>({});
+  const [privateState,_setPrivateState] = useState<{[key:string]:boolean}>({});
 
   //selectedDate,SharedWithのマウント時に自分と相手の情報を取得
   useEffect(()=>{
@@ -54,7 +54,7 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
     onAddClick();
   };
   //チェックボックスで公開、非公開を切り替え
-  const handleCheck = async(categoryName:string)=>{
+  const handleCheck = async(_categoryName:string)=>{
 
   }
 
