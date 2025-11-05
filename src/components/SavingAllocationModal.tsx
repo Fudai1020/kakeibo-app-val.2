@@ -83,7 +83,7 @@ const SavingAllocationModal = ({onClose,selectedDate,onSaveSuccess}:props) => {
     
     try{
       const userId = localStorage.getItem("userId");
-      const response = await apiFetch("http://localhost:8080/api/savings/save",{
+      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/savings/save`,{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
