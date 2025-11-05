@@ -27,7 +27,7 @@ https://kakeibo-app-val-2.vercel.app
 | フロントエンド | React/Vita/TypeScript |
 | バックエンド | Springboot,Mysql |
 | スタイリング | CSS Module |
-| デプロイホスティング | フロント：Versel |　バックエンド：Render
+| デプロイホスティング | フロント：Versel バックエンド：Render|
 | テスト | Junit |
 ## 機能一覧
 | 機能 | 説明 |
