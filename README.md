@@ -74,6 +74,4 @@ https://kakeibo-app-val-2.vercel.app
 RDBも同時に学びながらやっていたのでかなり時間がかかってしまった。また、WebSocketやJWTなどの新しいライブラリや
 デプロイ時に環境変数などを組み込めたのでより実践的にできたと思う。次からの開発ではもっと実務を意識しながら、完成度が
 高いプロダクトを作成していきたいと思った
-# kakeibo-app-val.2
-# kakeibo-app-val.2
-# kakeibo-app-val.2
+
